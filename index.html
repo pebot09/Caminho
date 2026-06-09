@@ -4,17 +4,200 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Caminho</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <style>
-    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+    *, *::before, *::after {
+      font-family: 'Press Start 2P', monospace !important;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #0f380f;
+      color: #9bbc0f;
+      min-height: 100vh;
+      margin: 0;
+    }
+
     .fade-in { animation: fadeIn 0.15s ease-in; }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+
+    /* ---- pixel boxes ---- */
+    .pb {
+      background: #122c14;
+      border: 3px solid #9bbc0f;
+      box-shadow: 4px 4px 0 #030a03;
+    }
+    .pb-blue {
+      background: #0a1e36;
+      border: 3px solid #4a90c8;
+      box-shadow: 4px 4px 0 #010508;
+    }
+    .pb-orange {
+      background: #2a1200;
+      border: 3px solid #c87820;
+      box-shadow: 4px 4px 0 #0a0400;
+    }
+    .pb-surface {
+      background: #0d220f;
+      border: 3px solid #306230;
+      box-shadow: 3px 3px 0 #030a03;
+    }
+
+    /* ---- pixel buttons ---- */
+    .btn {
+      display: block;
+      width: 100%;
+      padding: 18px 12px;
+      cursor: pointer;
+      text-transform: uppercase;
+      text-align: center;
+      letter-spacing: 1px;
+      line-height: 1.7;
+      transition: transform 0.05s, box-shadow 0.05s;
+    }
+    .btn:active { transform: translate(3px, 3px); }
+
+    .btn-green {
+      background: #1a4020;
+      border: 3px solid #9bbc0f;
+      color: #9bbc0f;
+      box-shadow: 4px 4px 0 #030a03;
+      font-size: 11px;
+    }
+    .btn-green:active { box-shadow: 1px 1px 0 #030a03; }
+
+    .btn-blue {
+      background: #0a1e36;
+      border: 3px solid #4a90c8;
+      color: #4a90c8;
+      box-shadow: 4px 4px 0 #010508;
+      font-size: 11px;
+    }
+    .btn-blue:active { box-shadow: 1px 1px 0 #010508; }
+
+    .btn-red {
+      background: #280808;
+      border: 3px solid #c83030;
+      color: #ef8080;
+      box-shadow: 4px 4px 0 #0a0202;
+      font-size: 13px;
+      padding: 22px;
+    }
+    .btn-red:active { box-shadow: 1px 1px 0 #0a0202; }
+
+    .btn-orange {
+      background: #2a1200;
+      border: 3px solid #c87820;
+      color: #e8a040;
+      box-shadow: 4px 4px 0 #0a0400;
+    }
+    .btn-orange:active { box-shadow: 1px 1px 0 #0a0400; }
+
+    .btn-ghost {
+      background: #0d220f;
+      border: 3px solid #306230;
+      color: #8bac0f;
+      box-shadow: 3px 3px 0 #030a03;
+    }
+    .btn-ghost:active { box-shadow: 1px 1px 0 #030a03; }
+
+    /* ---- header ---- */
+    .gb-header {
+      background: #08180a;
+      border-bottom: 3px solid #9bbc0f;
+      padding: 10px 14px;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    /* ---- pixel progress bar ---- */
+    .pbar-track {
+      background: #030a03;
+      border: 2px solid #8bac0f;
+      height: 14px;
+      overflow: hidden;
+    }
+    .pbar-green {
+      height: 100%;
+      background: repeating-linear-gradient(90deg, #9bbc0f 0, #9bbc0f 6px, #8bac0f 6px, #8bac0f 8px);
+    }
+    .pbar-blue {
+      height: 100%;
+      background: repeating-linear-gradient(90deg, #4a90c8 0, #4a90c8 6px, #2a6090 6px, #2a6090 8px);
+    }
+
+    /* ---- select ---- */
+    select {
+      background: #122c14 !important;
+      color: #9bbc0f !important;
+      border: 2px solid #8bac0f !important;
+      font-size: 7px !important;
+      padding: 6px 4px !important;
+      width: 100%;
+      margin-top: 4px;
+      appearance: none;
+    }
+
+    /* ---- toggle ---- */
+    .toggle-track {
+      width: 52px;
+      height: 26px;
+      position: relative;
+      cursor: pointer;
+      background: none;
+      border: 3px solid #306230;
+      box-shadow: 3px 3px 0 #030a03;
+      padding: 0;
+    }
+    .toggle-track.on { border-color: #4a90c8; }
+    .toggle-thumb {
+      position: absolute;
+      top: 2px;
+      width: 16px;
+      height: 16px;
+      transition: left 0.1s;
+    }
+    .toggle-track.off .toggle-thumb { left: 2px; background: #306230; }
+    .toggle-track.on  .toggle-thumb { left: 24px; background: #4a90c8; }
+
+    /* ---- scanlines overlay ---- */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent 0, transparent 3px,
+        rgba(0,0,0,0.07) 3px, rgba(0,0,0,0.07) 4px
+      );
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    /* ---- section divider ---- */
+    .sec-title {
+      font-size: 9px;
+      color: #9bbc0f;
+      border-bottom: 2px solid #306230;
+      padding-bottom: 8px;
+      margin-bottom: 12px;
+      letter-spacing: 1px;
+    }
+
+    .dot-blue  { width: 8px; height: 8px; background: #4a90c8; flex-shrink: 0; }
+    .dot-green { width: 8px; height: 8px; background: #9bbc0f; flex-shrink: 0; }
   </style>
 </head>
-<body class="bg-gray-100 min-h-screen">
+<body>
 <div id="root"></div>
 <script type="text/babel">
 const { useState, useEffect, useRef, useMemo } = React;
@@ -95,10 +278,8 @@ function calcularRecomendacao(chuva) {
   const dia = agora.getDay();
   const hist = obterHistorico();
 
-  // Expande janela até ter dados suficientes
   let ctx = filtrarContexto(hist, hora, dia, chuva, 1);
   if (ctx.length < 6) ctx = filtrarContexto(hist, hora, dia, chuva, 2);
-  // Se ainda pouco, ignora chuva
   if (ctx.length < 4) {
     ctx = hist.filter(t =>
       t.diaSemana === dia &&
@@ -156,46 +337,53 @@ function RecomendacaoCard({ rec }) {
   if (!rec) return null;
 
   if (rec.tipo === 'sem_dados') return (
-    <div className="bg-gray-200 rounded-2xl p-4 mb-4 text-center fade-in">
-      <div className="text-3xl mb-1">📊</div>
-      <p className="text-gray-600 font-semibold">Poucos dados ainda</p>
-      <p className="text-sm text-gray-500 mt-1">
-        Registre mais trajetos para receber recomendações.
-        <br/>Mergulhão: {rec.contM} · Rua: {rec.contR}
+    <div className="pb-surface fade-in" style={{padding:'16px', marginBottom:'12px', textAlign:'center'}}>
+      <div style={{fontSize:'8px', color:'#306230', marginBottom:'10px', letterSpacing:'2px'}}>[ ANÁLISE ]</div>
+      <p style={{fontSize:'8px', color:'#9bbc0f', marginBottom:'10px', lineHeight:'2'}}>DADOS INSUFICIENTES</p>
+      <p style={{fontSize:'7px', color:'#8bac0f', lineHeight:'2.2'}}>
+        Registre mais trajetos.<br/>
+        MERG: {rec.contM} &nbsp;·&nbsp; RUA: {rec.contR}
       </p>
     </div>
   );
 
   if (rec.tipo === 'teste') return (
-    <div className="bg-yellow-100 border border-yellow-300 rounded-2xl p-4 mb-4 text-center fade-in">
-      <div className="text-xs font-bold text-yellow-700 uppercase tracking-widest mb-1">Sugestão</div>
-      <div className="text-lg font-bold text-yellow-800">
-        Teste o {rec.caminhoNome} — poucos dados para comparar
+    <div className="pb-orange fade-in" style={{padding:'16px', marginBottom:'12px', textAlign:'center'}}>
+      <div style={{fontSize:'7px', color:'#c87820', marginBottom:'8px', letterSpacing:'2px'}}>[ SUGESTÃO ]</div>
+      <div style={{fontSize:'9px', color:'#e8a040', lineHeight:'2'}}>
+        TESTE O<br/>{rec.caminhoNome.toUpperCase()}
       </div>
     </div>
   );
 
-  const azul = rec.caminho === 'mergulhao';
-  const bg = azul ? 'bg-blue-50 border-blue-200' : 'bg-emerald-50 border-emerald-200';
-  const badge = azul ? 'bg-blue-600' : 'bg-emerald-600';
+  const isBlue = rec.caminho === 'mergulhao';
+  const accent = isBlue ? '#4a90c8' : '#9bbc0f';
+  const muted  = isBlue ? '#2a6090' : '#306230';
 
   return (
-    <div className={`rounded-2xl p-5 mb-4 border ${bg} fade-in`}>
-      <div className="flex items-center justify-between mb-2">
-        <span className="text-xs font-bold uppercase tracking-widest text-gray-500">
-          {rec.tipo === 'claro' ? 'Recomendado agora' : 'Ligeiramente melhor'}
+    <div className={isBlue ? 'pb-blue fade-in' : 'pb fade-in'} style={{padding:'16px', marginBottom:'12px'}}>
+      <div style={{display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:'10px'}}>
+        <span style={{fontSize:'7px', color: muted, letterSpacing:'1px'}}>
+          {rec.tipo === 'claro' ? '[ RECOMENDADO ]' : '[ QUASE IGUAL ]'}
         </span>
-        <span className={`text-xs font-bold px-2 py-0.5 rounded-full text-white ${badge}`}>
-          {rec.probabilidade}% mais rápido
+        <span style={{
+          fontSize:'7px', padding:'3px 8px',
+          background: isBlue ? '#0a1e36' : '#122c14',
+          border: `2px solid ${accent}`,
+          color: accent,
+        }}>
+          {rec.probabilidade}%
         </span>
       </div>
-      <div className="text-2xl font-black text-gray-800 mb-1">{rec.caminhoNome}</div>
-      <div className="text-gray-500 text-sm">
-        Estimativa: <strong className="text-gray-700">{rec.estimadoMin}–{rec.estimadoMax} min</strong>
+      <div style={{fontSize:'13px', color: accent, marginBottom:'8px', lineHeight:'1.5'}}>
+        ▶ {rec.caminhoNome.toUpperCase()}
+      </div>
+      <div style={{fontSize:'8px', color: muted, lineHeight:'2'}}>
+        EST:&nbsp;<span style={{color: accent}}>{rec.estimadoMin}–{rec.estimadoMax} MIN</span>
       </div>
       {rec.medM && rec.medR && (
-        <div className="text-xs text-gray-400 mt-1.5">
-          Mergulhão {fmtTempo(Math.round(rec.medM))} · Rua {fmtTempo(Math.round(rec.medR))}
+        <div style={{fontSize:'7px', color: muted, marginTop:'8px', lineHeight:'2'}}>
+          MERG {fmtTempo(Math.round(rec.medM))} · RUA {fmtTempo(Math.round(rec.medR))}
         </div>
       )}
     </div>
@@ -203,31 +391,57 @@ function RecomendacaoCard({ rec }) {
 }
 
 function Cronometro({ segundos, caminho, onParar, onCaminhaoLixo, caminhaoLixo }) {
-  const nome = caminho === 'mergulhao' ? 'Mergulhão' : 'Rua da Passagem';
-  const cor = caminho === 'mergulhao' ? 'text-blue-600' : 'text-emerald-600';
+  const isBlue = caminho === 'mergulhao';
+  const nome   = isBlue ? 'MERGULHÃO' : 'RUA DA PASSAGEM';
+  const accent = isBlue ? '#4a90c8' : '#9bbc0f';
+  const glow   = isBlue ? '#1a4a7a' : '#306230';
+
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 p-6 select-none">
-      <div className="text-sm font-bold text-gray-400 uppercase tracking-widest mb-3">{nome}</div>
-      <div className={`text-8xl font-black tabular-nums ${cor} mb-10`}>
-        {fmtTempo(segundos)}
+    <div style={{
+      minHeight: '100vh',
+      background: '#0f380f',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: '24px',
+      gap: '20px',
+    }}>
+      <div className={isBlue ? 'pb-blue' : 'pb'} style={{width:'100%', maxWidth:'320px', padding:'12px', textAlign:'center'}}>
+        <div style={{fontSize:'7px', color: isBlue ? '#2a6090' : '#306230', marginBottom:'6px', letterSpacing:'2px'}}>
+          ROTA ATIVA
+        </div>
+        <div style={{fontSize:'9px', color: accent}}>{nome}</div>
       </div>
+
+      <div className={isBlue ? 'pb-blue' : 'pb'} style={{width:'100%', maxWidth:'320px', padding:'28px 16px', textAlign:'center'}}>
+        <div style={{
+          fontSize: '44px',
+          color: accent,
+          letterSpacing: '4px',
+          lineHeight: '1',
+          textShadow: `0 0 18px ${glow}`,
+        }}>
+          {fmtTempo(segundos)}
+        </div>
+      </div>
+
       {caminho === 'rua_passagem' && (
         <button
           onClick={onCaminhaoLixo}
-          className={`mb-6 px-6 py-3 rounded-xl font-bold text-sm border-2 transition-all active:scale-95 ${
-            caminhaoLixo
-              ? 'bg-orange-500 border-orange-500 text-white'
-              : 'bg-white border-orange-300 text-orange-500'
-          }`}
+          className={`btn ${caminhaoLixo ? 'btn-orange' : 'btn-ghost'}`}
+          style={{maxWidth:'320px', fontSize:'9px', padding:'14px'}}
         >
-          🚛 Caminhão de Lixo{caminhaoLixo ? ' ✓' : ''}
+          {caminhaoLixo ? '■' : '□'} CAMINHÃO DE LIXO
         </button>
       )}
+
       <button
         onClick={onParar}
-        className="bg-red-500 active:bg-red-700 text-white font-black text-2xl px-14 py-5 rounded-2xl shadow-xl active:scale-95 transition-all"
+        className="btn btn-red"
+        style={{maxWidth:'320px'}}
       >
-        PARAR
+        ■ PARAR
       </button>
     </div>
   );
@@ -235,14 +449,15 @@ function Cronometro({ segundos, caminho, onParar, onCaminhaoLixo, caminhaoLixo }
 
 function Barra({ label, valor, maximo, cor, count }) {
   const pct = maximo > 0 ? Math.round((valor / maximo) * 100) : 0;
+  const isBlue = cor.includes('blue');
   return (
-    <div className="mb-3">
-      <div className="flex justify-between text-sm mb-1">
-        <span className="font-medium text-gray-700">{label}</span>
-        <span className="text-gray-500">{fmtTempo(Math.round(valor))} <span className="text-xs text-gray-400">({count}×)</span></span>
+    <div style={{marginBottom:'16px'}}>
+      <div style={{display:'flex', justifyContent:'space-between', fontSize:'7px', marginBottom:'6px', lineHeight:'2'}}>
+        <span style={{color:'#9bbc0f'}}>{label.toUpperCase()}</span>
+        <span style={{color:'#8bac0f'}}>{fmtTempo(Math.round(valor))} ({count}×)</span>
       </div>
-      <div className="bg-gray-100 rounded-full h-3">
-        <div className={`${cor} h-3 rounded-full transition-all`} style={{ width: `${pct}%` }} />
+      <div className="pbar-track">
+        <div className={isBlue ? 'pbar-blue' : 'pbar-green'} style={{width:`${pct}%`}} />
       </div>
     </div>
   );
@@ -281,7 +496,7 @@ function Estatisticas({ onVoltar }) {
   const chuvaStats = useMemo(() => ['mergulhao', 'rua_passagem'].map(c => {
     const semC = hist.filter(t => t.caminho === c && !t.chuva).map(t => t.tempoSegundos);
     const comC = hist.filter(t => t.caminho === c && t.chuva).map(t => t.tempoSegundos);
-    return { nome: c === 'mergulhao' ? 'Mergulhão' : 'Rua da Passagem', semC, comC };
+    return { nome: c === 'mergulhao' ? 'MERGULHÃO' : 'RUA DA PASSAGEM', semC, comC };
   }), [hist]);
 
   const caminhaoStats = useMemo(() => {
@@ -295,58 +510,71 @@ function Estatisticas({ onVoltar }) {
     };
   }, [hist]);
 
+  const T = ({ children }) => (
+    <div className="sec-title">▶ {children}</div>
+  );
+
   return (
-    <div className="min-h-screen bg-gray-100 pb-10">
-      <div className="bg-white shadow-sm px-4 py-3 flex items-center gap-3 sticky top-0 z-10">
-        <button onClick={onVoltar} className="text-blue-600 font-semibold">← Voltar</button>
-        <h1 className="font-black text-gray-800 text-lg flex-1">Estatísticas</h1>
-        <span className="text-xs text-gray-400">{hist.length} trajetos</span>
+    <div style={{minHeight:'100vh', background:'#0f380f', paddingBottom:'40px'}}>
+      <div className="gb-header">
+        <button
+          onClick={onVoltar}
+          style={{fontSize:'8px', color:'#9bbc0f', background:'none', border:'none', cursor:'pointer', padding:'0'}}
+        >
+          ← VOLTAR
+        </button>
+        <span style={{fontSize:'10px', color:'#9bbc0f'}}>ESTATÍSTICAS</span>
+        <span style={{fontSize:'7px', color:'#8bac0f'}}>{hist.length} REG</span>
       </div>
 
-      <div className="p-4 space-y-4">
+      <div style={{padding:'12px', display:'flex', flexDirection:'column', gap:'12px'}}>
+
         {/* Filtros */}
-        <div className="bg-white rounded-xl p-4 shadow-sm flex gap-3">
-          <div className="flex-1">
-            <label className="text-xs font-bold text-gray-400 uppercase">Dia</label>
-            <select value={filtro.dia} onChange={e => setFiltro(f => ({ ...f, dia: e.target.value }))}
-              className="w-full mt-1 border border-gray-200 rounded-lg px-2 py-1.5 text-sm">
-              <option value="todos">Todos</option>
-              {[1,2,3,4,5,6,0].map(d => <option key={d} value={d}>{DIAS_FULL[d]}</option>)}
-            </select>
-          </div>
-          <div className="flex-1">
-            <label className="text-xs font-bold text-gray-400 uppercase">Chuva</label>
-            <select value={filtro.chuva} onChange={e => setFiltro(f => ({ ...f, chuva: e.target.value }))}
-              className="w-full mt-1 border border-gray-200 rounded-lg px-2 py-1.5 text-sm">
-              <option value="todos">Todos</option>
-              <option value="nao">Sem chuva</option>
-              <option value="sim">Com chuva</option>
-            </select>
+        <div className="pb-surface" style={{padding:'12px'}}>
+          <T>FILTROS</T>
+          <div style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:'12px'}}>
+            <div>
+              <div style={{fontSize:'7px', color:'#306230', letterSpacing:'1px'}}>DIA</div>
+              <select value={filtro.dia} onChange={e => setFiltro(f => ({ ...f, dia: e.target.value }))}>
+                <option value="todos">TODOS</option>
+                {[1,2,3,4,5,6,0].map(d => <option key={d} value={d}>{DIAS_FULL[d].toUpperCase()}</option>)}
+              </select>
+            </div>
+            <div>
+              <div style={{fontSize:'7px', color:'#306230', letterSpacing:'1px'}}>CHUVA</div>
+              <select value={filtro.chuva} onChange={e => setFiltro(f => ({ ...f, chuva: e.target.value }))}>
+                <option value="todos">TODOS</option>
+                <option value="nao">SEM CHUVA</option>
+                <option value="sim">COM CHUVA</option>
+              </select>
+            </div>
           </div>
         </div>
 
         {/* Média geral */}
-        <div className="bg-white rounded-xl p-4 shadow-sm">
-          <h2 className="font-bold text-gray-700 mb-3">Média Geral</h2>
+        <div className="pb-surface" style={{padding:'12px'}}>
+          <T>MÉDIA GERAL</T>
           {mediaM
             ? <Barra label="Mergulhão" valor={mediaM} maximo={maxGeral} cor="bg-blue-500" count={tM.length} />
-            : <p className="text-sm text-gray-400">Sem dados para Mergulhão</p>}
+            : <p style={{fontSize:'7px', color:'#306230', lineHeight:'2'}}>SEM DADOS — MERGULHÃO</p>}
           {mediaR
             ? <Barra label="Rua da Passagem" valor={mediaR} maximo={maxGeral} cor="bg-emerald-500" count={tR.length} />
-            : <p className="text-sm text-gray-400">Sem dados para Rua da Passagem</p>}
+            : <p style={{fontSize:'7px', color:'#306230', lineHeight:'2'}}>SEM DADOS — RUA</p>}
         </div>
 
-        {/* Por dia da semana */}
+        {/* Por dia */}
         {porDia.length > 0 && (
-          <div className="bg-white rounded-xl p-4 shadow-sm">
-            <h2 className="font-bold text-gray-700 mb-3">Por Dia da Semana</h2>
+          <div className="pb-surface" style={{padding:'12px'}}>
+            <T>POR DIA DA SEMANA</T>
             {porDia.map(({ dia, m, r }) => {
               const mx = Math.max(m || 0, r || 0);
               const cntM = filtrados.filter(t => t.diaSemana === dia && t.caminho === 'mergulhao').length;
               const cntR = filtrados.filter(t => t.diaSemana === dia && t.caminho === 'rua_passagem').length;
               return (
-                <div key={dia} className="mb-4 last:mb-0">
-                  <div className="text-xs font-bold text-gray-400 uppercase mb-1.5">{DIAS_FULL[dia]}</div>
+                <div key={dia} style={{marginBottom:'16px'}}>
+                  <div style={{fontSize:'7px', color:'#8bac0f', letterSpacing:'2px', marginBottom:'8px'}}>
+                    [{DIAS_FULL[dia].toUpperCase()}]
+                  </div>
                   {m && <Barra label="Mergulhão" valor={m} maximo={mx} cor="bg-blue-400" count={cntM} />}
                   {r && <Barra label="Rua" valor={r} maximo={mx} cor="bg-emerald-400" count={cntR} />}
                 </div>
@@ -355,44 +583,44 @@ function Estatisticas({ onVoltar }) {
           </div>
         )}
 
-        {/* Impacto da chuva */}
-        <div className="bg-white rounded-xl p-4 shadow-sm">
-          <h2 className="font-bold text-gray-700 mb-3">🌧️ Impacto da Chuva</h2>
+        {/* Chuva */}
+        <div className="pb-surface" style={{padding:'12px'}}>
+          <T>IMPACTO DA CHUVA</T>
           {chuvaStats.map(({ nome, semC, comC }) => (
-            <div key={nome} className="mb-3 last:mb-0">
-              <div className="text-sm font-bold text-gray-600 mb-1.5">{nome}</div>
-              <div className="grid grid-cols-2 gap-2 text-sm">
-                <div className="bg-gray-50 rounded-lg p-2 text-center">
-                  <div className="text-xs text-gray-400">Sem chuva ({semC.length}×)</div>
-                  <div className="font-bold text-gray-700">{semC.length ? fmtTempo(Math.round(calcMedia(semC))) : '—'}</div>
+            <div key={nome} style={{marginBottom:'16px'}}>
+              <div style={{fontSize:'7px', color:'#8bac0f', marginBottom:'8px', lineHeight:'2'}}>{nome}</div>
+              <div style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:'8px'}}>
+                <div className="pb-surface" style={{padding:'8px', textAlign:'center', border:'2px solid #306230'}}>
+                  <div style={{fontSize:'7px', color:'#306230', marginBottom:'6px', lineHeight:'2'}}>SEM ({semC.length}×)</div>
+                  <div style={{fontSize:'10px', color:'#9bbc0f'}}>{semC.length ? fmtTempo(Math.round(calcMedia(semC))) : '—'}</div>
                 </div>
-                <div className="bg-blue-50 rounded-lg p-2 text-center">
-                  <div className="text-xs text-gray-400">Com chuva ({comC.length}×)</div>
-                  <div className="font-bold text-blue-700">{comC.length ? fmtTempo(Math.round(calcMedia(comC))) : '—'}</div>
+                <div className="pb-blue" style={{padding:'8px', textAlign:'center'}}>
+                  <div style={{fontSize:'7px', color:'#2a6090', marginBottom:'6px', lineHeight:'2'}}>COM ({comC.length}×)</div>
+                  <div style={{fontSize:'10px', color:'#4a90c8'}}>{comC.length ? fmtTempo(Math.round(calcMedia(comC))) : '—'}</div>
                 </div>
               </div>
             </div>
           ))}
         </div>
 
-        {/* Caminhão de lixo */}
+        {/* Caminhão */}
         {caminhaoStats.total > 0 && (
-          <div className="bg-white rounded-xl p-4 shadow-sm">
-            <h2 className="font-bold text-gray-700 mb-2">🚛 Caminhão de Lixo</h2>
-            <p className="text-sm text-gray-500 mb-3">
-              Encontrado em {caminhaoStats.qtdCom} de {caminhaoStats.total} trajetos pela Rua
-              {' '}({Math.round(caminhaoStats.qtdCom / caminhaoStats.total * 100)}%)
+          <div className="pb-surface" style={{padding:'12px'}}>
+            <T>CAMINHÃO DE LIXO</T>
+            <p style={{fontSize:'7px', color:'#8bac0f', lineHeight:'2.2', marginBottom:'12px'}}>
+              ENCONTRADO {caminhaoStats.qtdCom}/{caminhaoStats.total} VEZES
+              ({Math.round(caminhaoStats.qtdCom / caminhaoStats.total * 100)}%)
             </p>
-            <div className="grid grid-cols-2 gap-2 text-sm">
-              <div className="bg-gray-50 rounded-lg p-2 text-center">
-                <div className="text-xs text-gray-400">Sem caminhão</div>
-                <div className="font-bold text-gray-700">
+            <div style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:'8px'}}>
+              <div className="pb-surface" style={{padding:'8px', textAlign:'center', border:'2px solid #306230'}}>
+                <div style={{fontSize:'7px', color:'#306230', marginBottom:'6px', lineHeight:'2'}}>SEM</div>
+                <div style={{fontSize:'10px', color:'#9bbc0f'}}>
                   {caminhaoStats.mediaSem ? fmtTempo(Math.round(caminhaoStats.mediaSem)) : '—'}
                 </div>
               </div>
-              <div className="bg-orange-50 rounded-lg p-2 text-center">
-                <div className="text-xs text-gray-400">Com caminhão</div>
-                <div className="font-bold text-orange-600">
+              <div className="pb-orange" style={{padding:'8px', textAlign:'center'}}>
+                <div style={{fontSize:'7px', color:'#c87820', marginBottom:'6px', lineHeight:'2'}}>COM</div>
+                <div style={{fontSize:'10px', color:'#e8a040'}}>
                   {caminhaoStats.mediaCom ? fmtTempo(Math.round(caminhaoStats.mediaCom)) : '—'}
                 </div>
               </div>
@@ -401,37 +629,50 @@ function Estatisticas({ onVoltar }) {
         )}
 
         {/* Histórico */}
-        <div className="bg-white rounded-xl p-4 shadow-sm">
-          <h2 className="font-bold text-gray-700 mb-3">Histórico</h2>
+        <div className="pb-surface" style={{padding:'12px'}}>
+          <T>HISTÓRICO</T>
           {filtrados.length === 0
-            ? <p className="text-sm text-gray-400 text-center py-4">Nenhum trajeto registrado</p>
-            : (
-              <div className="space-y-0">
-                {[...filtrados].reverse().map(t => (
-                  <div key={t.id} className="flex items-center gap-2 py-2.5 border-b border-gray-100 last:border-0">
-                    <div className={`w-2 h-2 rounded-full flex-shrink-0 ${t.caminho === 'mergulhao' ? 'bg-blue-500' : 'bg-emerald-500'}`} />
-                    <div className="flex-1 min-w-0">
-                      <div className="text-sm font-semibold text-gray-700">
-                        {t.caminho === 'mergulhao' ? 'Mergulhão' : 'Rua da Passagem'}
-                        {t.chuva && ' 🌧️'}{t.caminhaoLixo && ' 🚛'}
-                      </div>
-                      <div className="text-xs text-gray-400">{fmtData(t.data)}</div>
-                    </div>
-                    <div className="text-sm font-bold text-gray-600 tabular-nums">{fmtTempo(t.tempoSegundos)}</div>
-                    {confirmDelete === t.id ? (
-                      <div className="flex gap-1">
-                        <button onClick={() => handleDelete(t.id)} className="text-xs bg-red-500 text-white px-2 py-1 rounded-md">✓</button>
-                        <button onClick={() => setConfirmDelete(null)} className="text-xs bg-gray-200 px-2 py-1 rounded-md">✗</button>
-                      </div>
-                    ) : (
-                      <button onClick={() => setConfirmDelete(t.id)} className="text-gray-300 hover:text-red-400 text-xl leading-none px-1">×</button>
-                    )}
+            ? <p style={{fontSize:'7px', color:'#306230', textAlign:'center', padding:'16px', lineHeight:'2'}}>
+                NENHUM TRAJETO REGISTRADO
+              </p>
+            : [...filtrados].reverse().map(t => (
+              <div key={t.id} style={{
+                display:'flex', alignItems:'center', gap:'8px',
+                padding:'10px 0',
+                borderBottom:'1px solid #1a3a1a',
+                fontSize:'7px',
+              }}>
+                <div className={t.caminho === 'mergulhao' ? 'dot-blue' : 'dot-green'} />
+                <div style={{flex:1, minWidth:0}}>
+                  <div style={{color:'#9bbc0f', lineHeight:'2'}}>
+                    {t.caminho === 'mergulhao' ? 'MERGULHÃO' : 'RUA'}
+                    {t.chuva && ' [CHUVA]'}{t.caminhaoLixo && ' [LIXO]'}
                   </div>
-                ))}
+                  <div style={{color:'#306230', lineHeight:'2'}}>{fmtData(t.data)}</div>
+                </div>
+                <div style={{color:'#8bac0f', fontWeight:'bold'}}>{fmtTempo(t.tempoSegundos)}</div>
+                {confirmDelete === t.id ? (
+                  <div style={{display:'flex', gap:'4px'}}>
+                    <button
+                      onClick={() => handleDelete(t.id)}
+                      style={{fontSize:'7px', background:'#280808', border:'2px solid #c83030', color:'#ef8080', padding:'4px 6px', cursor:'pointer'}}
+                    >✓</button>
+                    <button
+                      onClick={() => setConfirmDelete(null)}
+                      style={{fontSize:'7px', background:'#0d220f', border:'2px solid #306230', color:'#9bbc0f', padding:'4px 6px', cursor:'pointer'}}
+                    >✗</button>
+                  </div>
+                ) : (
+                  <button
+                    onClick={() => setConfirmDelete(t.id)}
+                    style={{fontSize:'14px', background:'none', border:'none', color:'#306230', cursor:'pointer', padding:'0 4px'}}
+                  >×</button>
+                )}
               </div>
-            )
+            ))
           }
         </div>
+
       </div>
     </div>
   );
@@ -483,63 +724,82 @@ function App() {
   );
 
   const agora = new Date();
+  const recM = rec?.caminho === 'mergulhao';
+  const recR = rec?.caminho === 'rua_passagem';
 
   return (
-    <div className="min-h-screen bg-gray-100">
-      <div className="bg-white shadow-sm px-4 py-3 flex items-center justify-between sticky top-0 z-10">
-        <h1 className="font-black text-gray-800 text-xl">Caminho</h1>
-        <button onClick={() => setTela('stats')}
-          className="text-sm text-gray-500 font-medium px-3 py-1.5 bg-gray-100 rounded-lg active:bg-gray-200">
-          Estatísticas
+    <div style={{minHeight:'100vh', background:'#0f380f'}}>
+      <div className="gb-header">
+        <span style={{fontSize:'14px', color:'#9bbc0f', letterSpacing:'3px'}}>CAMINHO</span>
+        <button
+          onClick={() => setTela('stats')}
+          style={{
+            fontSize:'8px', cursor:'pointer',
+            background:'#1a4020', border:'2px solid #8bac0f',
+            color:'#9bbc0f', padding:'6px 10px',
+            boxShadow:'2px 2px 0 #030a03',
+          }}
+        >
+          STATS
         </button>
       </div>
 
-      <div className="p-4">
-        <div className="text-xs text-gray-400 text-center mb-3">
-          {DIAS_FULL[agora.getDay()]} · {agora.getHours()}h{String(agora.getMinutes()).padStart(2,'0')}
+      <div style={{padding:'12px', display:'flex', flexDirection:'column', gap:'12px'}}>
+
+        {/* Data/hora */}
+        <div style={{textAlign:'center', fontSize:'8px', color:'#306230', lineHeight:'2', letterSpacing:'1px'}}>
+          {DIAS_FULL[agora.getDay()].toUpperCase()} · {agora.getHours()}H{String(agora.getMinutes()).padStart(2,'0')}
         </div>
 
+        {/* Recomendação */}
         <RecomendacaoCard rec={rec} />
 
         {/* Toggle chuva */}
-        <div className="flex items-center justify-between bg-white rounded-xl px-4 py-3 shadow-sm mb-5">
-          <span className="font-semibold text-gray-700">🌧️ Está chovendo?</span>
+        <div className="pb-surface" style={{
+          display:'flex', alignItems:'center', justifyContent:'space-between',
+          padding:'12px 14px',
+        }}>
+          <span style={{fontSize:'9px', color:'#9bbc0f'}}>CHUVA?</span>
           <button
             onClick={() => setChuva(v => !v)}
-            className={`relative w-12 h-6 rounded-full transition-colors duration-200 ${chuva ? 'bg-blue-500' : 'bg-gray-300'}`}
+            className={`toggle-track ${chuva ? 'on' : 'off'}`}
           >
-            <span className={`absolute top-0.5 w-5 h-5 bg-white rounded-full shadow-sm transition-transform duration-200 ${chuva ? 'translate-x-6' : 'translate-x-0.5'}`} />
+            <span className="toggle-thumb" />
           </button>
         </div>
 
-        {/* Botões de início */}
-        <div className="space-y-3">
-          <button
-            onClick={() => iniciar('mergulhao')}
-            className={`w-full py-5 rounded-2xl font-black text-xl text-white shadow-lg active:scale-95 transition-transform flex items-center justify-center gap-3
-              ${rec?.caminho === 'mergulhao' ? 'bg-blue-600 ring-4 ring-blue-300' : 'bg-blue-500'}`}
-          >
-            {rec?.caminho === 'mergulhao' && <span>★</span>}
-            START — Mergulhão
-          </button>
-          <button
-            onClick={() => iniciar('rua_passagem')}
-            className={`w-full py-5 rounded-2xl font-black text-xl text-white shadow-lg active:scale-95 transition-transform flex items-center justify-center gap-3
-              ${rec?.caminho === 'rua_passagem' ? 'bg-emerald-600 ring-4 ring-emerald-300' : 'bg-emerald-500'}`}
-          >
-            {rec?.caminho === 'rua_passagem' && <span>★</span>}
-            START — Rua da Passagem
-          </button>
-        </div>
+        {/* Botão Mergulhão */}
+        <button
+          onClick={() => iniciar('mergulhao')}
+          className="btn btn-blue"
+          style={recM ? {boxShadow:'0 0 0 2px #4a90c8, 4px 4px 0 #010508'} : {}}
+        >
+          {recM ? '★ ' : ''}START — MERGULHÃO
+        </button>
+
+        {/* Botão Rua da Passagem */}
+        <button
+          onClick={() => iniciar('rua_passagem')}
+          className="btn btn-green"
+          style={recR ? {boxShadow:'0 0 0 2px #9bbc0f, 4px 4px 0 #030a03'} : {}}
+        >
+          {recR ? '★ ' : ''}START — RUA DA PASSAGEM
+        </button>
 
         {/* Último salvo */}
         {ultimoSalvo && (
-          <div className="mt-4 bg-white rounded-xl px-4 py-3 shadow-sm text-sm text-gray-500 text-center fade-in">
-            Salvo: <strong className="text-gray-700">
-              {ultimoSalvo.caminho === 'mergulhao' ? 'Mergulhão' : 'Rua da Passagem'}
-            </strong> em {fmtTempo(ultimoSalvo.tempoSegundos)}
+          <div className="pb-surface fade-in" style={{
+            padding:'10px 14px', textAlign:'center',
+            fontSize:'7px', color:'#8bac0f', lineHeight:'2.2',
+          }}>
+            SALVO:&nbsp;
+            <span style={{color:'#9bbc0f'}}>
+              {ultimoSalvo.caminho === 'mergulhao' ? 'MERGULHÃO' : 'RUA DA PASSAGEM'}
+            </span>
+            &nbsp;EM {fmtTempo(ultimoSalvo.tempoSegundos)}
           </div>
         )}
+
       </div>
     </div>
   );
