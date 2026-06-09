@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Caminho</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+    .fade-in { animation: fadeIn 0.15s ease-in; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+  </style>
+</head>
+<body class="bg-gray-100 min-h-screen">
+<div id="root"></div>
+<script type="text/babel">
+const { useState, useEffect, useRef, useMemo } = React;
+
+const STORAGE_KEY = 'trajetos_historico';
+const DIAS = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+const DIAS_FULL = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
+
+// ==================== DADOS ====================
+
+function obterHistorico() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); }
+  catch { return []; }
+}
+
+function salvarTrajeto(caminho, tempoSegundos, chuva, caminhaoLixo) {
+  const agora = new Date();
+  const trajeto = {
+    id: Date.now(),
+    data: agora.toISOString(),
+    diaSemana: agora.getDay(),
+    hora: agora.getHours(),
+    caminho,
+    tempoSegundos,
+    chuva,
+    caminhaoLixo: caminho === 'rua_passagem' ? caminhaoLixo : false,
+  };
+  const historico = obterHistorico();
+  historico.push(trajeto);
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(historico));
+  return trajeto;
+}
+
+function deletarTrajeto(id) {
+  const historico = obterHistorico().filter(t => t.id !== id);
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(historico));
+}
+
+// ==================== CÁLCULOS ====================
+
+function calcMediana(arr) {
+  if (!arr.length) return null;
+  const s = [...arr].sort((a, b) => a - b);
+  const m = Math.floor(s.length / 2);
+  return s.length % 2 === 0 ? (s[m - 1] + s[m]) / 2 : s[m];
+}
+
+function calcMedia(arr) {
+  if (!arr.length) return null;
+  return arr.reduce((a, b) => a + b, 0) / arr.length;
+}
+
+function calcDesvio(arr) {
+  if (arr.length < 2) return 0;
+  const media = calcMedia(arr);
+  return Math.sqrt(arr.reduce((s, v) => s + (v - media) ** 2, 0) / arr.length);
+}
+
+function calcProbabilidadeMelhor(temposA, temposB) {
+  if (!temposA.length || !temposB.length) return null;
+  let c = 0, total = 0;
+  for (const a of temposA) for (const b of temposB) { if (a < b) c++; total++; }
+  return total > 0 ? c / total : null;
+}
+
+function filtrarContexto(historico, hora, diaSemana, chuva, janela) {
+  return historico.filter(t => {
+    if (t.chuva !== chuva) return false;
+    if (t.diaSemana !== diaSemana) return false;
+    const hMin = hora - janela, hMax = hora + janela;
+    return t.hora >= Math.max(0, hMin) && t.hora <= Math.min(23, hMax);
+  });
+}
+
+function calcularRecomendacao(chuva) {
+  const agora = new Date();
+  const hora = agora.getHours();
+  const dia = agora.getDay();
+  const hist = obterHistorico();
+
+  // Expande janela até ter dados suficientes
+  let ctx = filtrarContexto(hist, hora, dia, chuva, 1);
+  if (ctx.length < 6) ctx = filtrarContexto(hist, hora, dia, chuva, 2);
+  // Se ainda pouco, ignora chuva
+  if (ctx.length < 4) {
+    ctx = hist.filter(t =>
+      t.diaSemana === dia &&
+      t.hora >= Math.max(0, hora - 2) &&
+      t.hora <= Math.min(23, hora + 2)
+    );
+  }
+
+  const tM = ctx.filter(t => t.caminho === 'mergulhao').map(t => t.tempoSegundos);
+  const tR = ctx.filter(t => t.caminho === 'rua_passagem').map(t => t.tempoSegundos);
+  const MIN = 3;
+
+  if (tM.length < MIN && tR.length < MIN) {
+    return { tipo: 'sem_dados', contM: tM.length, contR: tR.length };
+  }
+  if (tM.length < MIN) return { tipo: 'teste', caminho: 'mergulhao', caminhoNome: 'Mergulhão' };
+  if (tR.length < MIN) return { tipo: 'teste', caminho: 'rua_passagem', caminhoNome: 'Rua da Passagem' };
+
+  const medM = calcMediana(tM), medR = calcMediana(tR);
+  const devM = calcDesvio(tM), devR = calcDesvio(tR);
+  const prob = calcProbabilidadeMelhor(tM, tR) ?? 0.5;
+  const diff = Math.abs(medR - medM);
+  const proximo = diff <= 30 && prob >= 0.4 && prob <= 0.6;
+  const caminho = prob >= 0.5 ? 'mergulhao' : 'rua_passagem';
+  const caminhoNome = prob >= 0.5 ? 'Mergulhão' : 'Rua da Passagem';
+  const medEscolhida = caminho === 'mergulhao' ? medM : medR;
+  const devEscolhido = caminho === 'mergulhao' ? devM : devR;
+  const probabilidade = Math.round(Math.max(prob, 1 - prob) * 100);
+
+  return {
+    tipo: proximo ? 'proximo' : 'claro',
+    caminho, caminhoNome,
+    estimadoMin: Math.floor(Math.max(medEscolhida - devEscolhido, 60) / 60),
+    estimadoMax: Math.ceil((medEscolhida + devEscolhido) / 60),
+    probabilidade,
+    medM, medR,
+  };
+}
+
+// ==================== UTILS ====================
+
+function fmtTempo(seg) {
+  const m = Math.floor(seg / 60), s = seg % 60;
+  return `${m}:${String(s).padStart(2, '0')}`;
+}
+
+function fmtData(iso) {
+  const d = new Date(iso);
+  return `${DIAS[d.getDay()]} ${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')} ${d.getHours()}:${String(d.getMinutes()).padStart(2,'0')}`;
+}
+
+// ==================== COMPONENTES ====================
+
+function RecomendacaoCard({ rec }) {
+  if (!rec) return null;
+
+  if (rec.tipo === 'sem_dados') return (
+    <div className="bg-gray-200 rounded-2xl p-4 mb-4 text-center fade-in">
+      <div className="text-3xl mb-1">📊</div>
+      <p className="text-gray-600 font-semibold">Poucos dados ainda</p>
+      <p className="text-sm text-gray-500 mt-1">
+        Registre mais trajetos para receber recomendações.
+        <br/>Mergulhão: {rec.contM} · Rua: {rec.contR}
+      </p>
+    </div>
+  );
+
+  if (rec.tipo === 'teste') return (
+    <div className="bg-yellow-100 border border-yellow-300 rounded-2xl p-4 mb-4 text-center fade-in">
+      <div className="text-xs font-bold text-yellow-700 uppercase tracking-widest mb-1">Sugestão</div>
+      <div className="text-lg font-bold text-yellow-800">
+        Teste o {rec.caminhoNome} — poucos dados para comparar
+      </div>
+    </div>
+  );
+
+  const azul = rec.caminho === 'mergulhao';
+  const bg = azul ? 'bg-blue-50 border-blue-200' : 'bg-emerald-50 border-emerald-200';
+  const badge = azul ? 'bg-blue-600' : 'bg-emerald-600';
+
+  return (
+    <div className={`rounded-2xl p-5 mb-4 border ${bg} fade-in`}>
+      <div className="flex items-center justify-between mb-2">
+        <span className="text-xs font-bold uppercase tracking-widest text-gray-500">
+          {rec.tipo === 'claro' ? 'Recomendado agora' : 'Ligeiramente melhor'}
+        </span>
+        <span className={`text-xs font-bold px-2 py-0.5 rounded-full text-white ${badge}`}>
+          {rec.probabilidade}% mais rápido
+        </span>
+      </div>
+      <div className="text-2xl font-black text-gray-800 mb-1">{rec.caminhoNome}</div>
+      <div className="text-gray-500 text-sm">
+        Estimativa: <strong className="text-gray-700">{rec.estimadoMin}–{rec.estimadoMax} min</strong>
+      </div>
+      {rec.medM && rec.medR && (
+        <div className="text-xs text-gray-400 mt-1.5">
+          Mergulhão {fmtTempo(Math.round(rec.medM))} · Rua {fmtTempo(Math.round(rec.medR))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function Cronometro({ segundos, caminho, onParar, onCaminhaoLixo, caminhaoLixo }) {
+  const nome = caminho === 'mergulhao' ? 'Mergulhão' : 'Rua da Passagem';
+  const cor = caminho === 'mergulhao' ? 'text-blue-600' : 'text-emerald-600';
+  return (
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 p-6 select-none">
+      <div className="text-sm font-bold text-gray-400 uppercase tracking-widest mb-3">{nome}</div>
+      <div className={`text-8xl font-black tabular-nums ${cor} mb-10`}>
+        {fmtTempo(segundos)}
+      </div>
+      {caminho === 'rua_passagem' && (
+        <button
+          onClick={onCaminhaoLixo}
+          className={`mb-6 px-6 py-3 rounded-xl font-bold text-sm border-2 transition-all active:scale-95 ${
+            caminhaoLixo
+              ? 'bg-orange-500 border-orange-500 text-white'
+              : 'bg-white border-orange-300 text-orange-500'
+          }`}
+        >
+          🚛 Caminhão de Lixo{caminhaoLixo ? ' ✓' : ''}
+        </button>
+      )}
+      <button
+        onClick={onParar}
+        className="bg-red-500 active:bg-red-700 text-white font-black text-2xl px-14 py-5 rounded-2xl shadow-xl active:scale-95 transition-all"
+      >
+        PARAR
+      </button>
+    </div>
+  );
+}
+
+function Barra({ label, valor, maximo, cor, count }) {
+  const pct = maximo > 0 ? Math.round((valor / maximo) * 100) : 0;
+  return (
+    <div className="mb-3">
+      <div className="flex justify-between text-sm mb-1">
+        <span className="font-medium text-gray-700">{label}</span>
+        <span className="text-gray-500">{fmtTempo(Math.round(valor))} <span className="text-xs text-gray-400">({count}×)</span></span>
+      </div>
+      <div className="bg-gray-100 rounded-full h-3">
+        <div className={`${cor} h-3 rounded-full transition-all`} style={{ width: `${pct}%` }} />
+      </div>
+    </div>
+  );
+}
+
+function Estatisticas({ onVoltar }) {
+  const [hist, setHist] = useState(obterHistorico);
+  const [filtro, setFiltro] = useState({ dia: 'todos', chuva: 'todos' });
+  const [confirmDelete, setConfirmDelete] = useState(null);
+
+  function handleDelete(id) {
+    deletarTrajeto(id);
+    setHist(obterHistorico());
+    setConfirmDelete(null);
+  }
+
+  const filtrados = useMemo(() => hist.filter(t => {
+    if (filtro.dia !== 'todos' && t.diaSemana !== parseInt(filtro.dia)) return false;
+    if (filtro.chuva === 'sim' && !t.chuva) return false;
+    if (filtro.chuva === 'nao' && t.chuva) return false;
+    return true;
+  }), [hist, filtro]);
+
+  const tM = filtrados.filter(t => t.caminho === 'mergulhao').map(t => t.tempoSegundos);
+  const tR = filtrados.filter(t => t.caminho === 'rua_passagem').map(t => t.tempoSegundos);
+  const mediaM = calcMedia(tM), mediaR = calcMedia(tR);
+  const maxGeral = Math.max(mediaM || 0, mediaR || 0);
+
+  const porDia = useMemo(() => [1,2,3,4,5,6,0].map(dia => {
+    const dT = filtrados.filter(t => t.diaSemana === dia);
+    const m = calcMedia(dT.filter(t => t.caminho === 'mergulhao').map(t => t.tempoSegundos));
+    const r = calcMedia(dT.filter(t => t.caminho === 'rua_passagem').map(t => t.tempoSegundos));
+    return { dia, m, r, total: dT.length };
+  }).filter(d => d.total > 0), [filtrados]);
+
+  const chuvaStats = useMemo(() => ['mergulhao', 'rua_passagem'].map(c => {
+    const semC = hist.filter(t => t.caminho === c && !t.chuva).map(t => t.tempoSegundos);
+    const comC = hist.filter(t => t.caminho === c && t.chuva).map(t => t.tempoSegundos);
+    return { nome: c === 'mergulhao' ? 'Mergulhão' : 'Rua da Passagem', semC, comC };
+  }), [hist]);
+
+  const caminhaoStats = useMemo(() => {
+    const rua = hist.filter(t => t.caminho === 'rua_passagem');
+    const com = rua.filter(t => t.caminhaoLixo);
+    const sem = rua.filter(t => !t.caminhaoLixo);
+    return {
+      total: rua.length, qtdCom: com.length,
+      mediaCom: calcMedia(com.map(t => t.tempoSegundos)),
+      mediaSem: calcMedia(sem.map(t => t.tempoSegundos)),
+    };
+  }, [hist]);
+
+  return (
+    <div className="min-h-screen bg-gray-100 pb-10">
+      <div className="bg-white shadow-sm px-4 py-3 flex items-center gap-3 sticky top-0 z-10">
+        <button onClick={onVoltar} className="text-blue-600 font-semibold">← Voltar</button>
+        <h1 className="font-black text-gray-800 text-lg flex-1">Estatísticas</h1>
+        <span className="text-xs text-gray-400">{hist.length} trajetos</span>
+      </div>
+
+      <div className="p-4 space-y-4">
+        {/* Filtros */}
+        <div className="bg-white rounded-xl p-4 shadow-sm flex gap-3">
+          <div className="flex-1">
+            <label className="text-xs font-bold text-gray-400 uppercase">Dia</label>
+            <select value={filtro.dia} onChange={e => setFiltro(f => ({ ...f, dia: e.target.value }))}
+              className="w-full mt-1 border border-gray-200 rounded-lg px-2 py-1.5 text-sm">
+              <option value="todos">Todos</option>
+              {[1,2,3,4,5,6,0].map(d => <option key={d} value={d}>{DIAS_FULL[d]}</option>)}
+            </select>
+          </div>
+          <div className="flex-1">
+            <label className="text-xs font-bold text-gray-400 uppercase">Chuva</label>
+            <select value={filtro.chuva} onChange={e => setFiltro(f => ({ ...f, chuva: e.target.value }))}
+              className="w-full mt-1 border border-gray-200 rounded-lg px-2 py-1.5 text-sm">
+              <option value="todos">Todos</option>
+              <option value="nao">Sem chuva</option>
+              <option value="sim">Com chuva</option>
+            </select>
+          </div>
+        </div>
+
+        {/* Média geral */}
+        <div className="bg-white rounded-xl p-4 shadow-sm">
+          <h2 className="font-bold text-gray-700 mb-3">Média Geral</h2>
+          {mediaM
+            ? <Barra label="Mergulhão" valor={mediaM} maximo={maxGeral} cor="bg-blue-500" count={tM.length} />
+            : <p className="text-sm text-gray-400">Sem dados para Mergulhão</p>}
+          {mediaR
+            ? <Barra label="Rua da Passagem" valor={mediaR} maximo={maxGeral} cor="bg-emerald-500" count={tR.length} />
+            : <p className="text-sm text-gray-400">Sem dados para Rua da Passagem</p>}
+        </div>
+
+        {/* Por dia da semana */}
+        {porDia.length > 0 && (
+          <div className="bg-white rounded-xl p-4 shadow-sm">
+            <h2 className="font-bold text-gray-700 mb-3">Por Dia da Semana</h2>
+            {porDia.map(({ dia, m, r }) => {
+              const mx = Math.max(m || 0, r || 0);
+              const cntM = filtrados.filter(t => t.diaSemana === dia && t.caminho === 'mergulhao').length;
+              const cntR = filtrados.filter(t => t.diaSemana === dia && t.caminho === 'rua_passagem').length;
+              return (
+                <div key={dia} className="mb-4 last:mb-0">
+                  <div className="text-xs font-bold text-gray-400 uppercase mb-1.5">{DIAS_FULL[dia]}</div>
+                  {m && <Barra label="Mergulhão" valor={m} maximo={mx} cor="bg-blue-400" count={cntM} />}
+                  {r && <Barra label="Rua" valor={r} maximo={mx} cor="bg-emerald-400" count={cntR} />}
+                </div>
+              );
+            })}
+          </div>
+        )}
+
+        {/* Impacto da chuva */}
+        <div className="bg-white rounded-xl p-4 shadow-sm">
+          <h2 className="font-bold text-gray-700 mb-3">🌧️ Impacto da Chuva</h2>
+          {chuvaStats.map(({ nome, semC, comC }) => (
+            <div key={nome} className="mb-3 last:mb-0">
+              <div className="text-sm font-bold text-gray-600 mb-1.5">{nome}</div>
+              <div className="grid grid-cols-2 gap-2 text-sm">
+                <div className="bg-gray-50 rounded-lg p-2 text-center">
+                  <div className="text-xs text-gray-400">Sem chuva ({semC.length}×)</div>
+                  <div className="font-bold text-gray-700">{semC.length ? fmtTempo(Math.round(calcMedia(semC))) : '—'}</div>
+                </div>
+                <div className="bg-blue-50 rounded-lg p-2 text-center">
+                  <div className="text-xs text-gray-400">Com chuva ({comC.length}×)</div>
+                  <div className="font-bold text-blue-700">{comC.length ? fmtTempo(Math.round(calcMedia(comC))) : '—'}</div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Caminhão de lixo */}
+        {caminhaoStats.total > 0 && (
+          <div className="bg-white rounded-xl p-4 shadow-sm">
+            <h2 className="font-bold text-gray-700 mb-2">🚛 Caminhão de Lixo</h2>
+            <p className="text-sm text-gray-500 mb-3">
+              Encontrado em {caminhaoStats.qtdCom} de {caminhaoStats.total} trajetos pela Rua
+              {' '}({Math.round(caminhaoStats.qtdCom / caminhaoStats.total * 100)}%)
+            </p>
+            <div className="grid grid-cols-2 gap-2 text-sm">
+              <div className="bg-gray-50 rounded-lg p-2 text-center">
+                <div className="text-xs text-gray-400">Sem caminhão</div>
+                <div className="font-bold text-gray-700">
+                  {caminhaoStats.mediaSem ? fmtTempo(Math.round(caminhaoStats.mediaSem)) : '—'}
+                </div>
+              </div>
+              <div className="bg-orange-50 rounded-lg p-2 text-center">
+                <div className="text-xs text-gray-400">Com caminhão</div>
+                <div className="font-bold text-orange-600">
+                  {caminhaoStats.mediaCom ? fmtTempo(Math.round(caminhaoStats.mediaCom)) : '—'}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Histórico */}
+        <div className="bg-white rounded-xl p-4 shadow-sm">
+          <h2 className="font-bold text-gray-700 mb-3">Histórico</h2>
+          {filtrados.length === 0
+            ? <p className="text-sm text-gray-400 text-center py-4">Nenhum trajeto registrado</p>
+            : (
+              <div className="space-y-0">
+                {[...filtrados].reverse().map(t => (
+                  <div key={t.id} className="flex items-center gap-2 py-2.5 border-b border-gray-100 last:border-0">
+                    <div className={`w-2 h-2 rounded-full flex-shrink-0 ${t.caminho === 'mergulhao' ? 'bg-blue-500' : 'bg-emerald-500'}`} />
+                    <div className="flex-1 min-w-0">
+                      <div className="text-sm font-semibold text-gray-700">
+                        {t.caminho === 'mergulhao' ? 'Mergulhão' : 'Rua da Passagem'}
+                        {t.chuva && ' 🌧️'}{t.caminhaoLixo && ' 🚛'}
+                      </div>
+                      <div className="text-xs text-gray-400">{fmtData(t.data)}</div>
+                    </div>
+                    <div className="text-sm font-bold text-gray-600 tabular-nums">{fmtTempo(t.tempoSegundos)}</div>
+                    {confirmDelete === t.id ? (
+                      <div className="flex gap-1">
+                        <button onClick={() => handleDelete(t.id)} className="text-xs bg-red-500 text-white px-2 py-1 rounded-md">✓</button>
+                        <button onClick={() => setConfirmDelete(null)} className="text-xs bg-gray-200 px-2 py-1 rounded-md">✗</button>
+                      </div>
+                    ) : (
+                      <button onClick={() => setConfirmDelete(t.id)} className="text-gray-300 hover:text-red-400 text-xl leading-none px-1">×</button>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )
+          }
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ==================== APP ====================
+
+function App() {
+  const [tela, setTela] = useState('principal');
+  const [chuva, setChuva] = useState(false);
+  const [caminho, setCaminho] = useState(null);
+  const [segundos, setSegundos] = useState(0);
+  const [caminhaoLixo, setCaminhaoLixo] = useState(false);
+  const [rec, setRec] = useState(() => calcularRecomendacao(false));
+  const [ultimoSalvo, setUltimoSalvo] = useState(null);
+  const timerRef = useRef(null);
+
+  useEffect(() => {
+    setRec(calcularRecomendacao(chuva));
+  }, [chuva]);
+
+  function iniciar(c) {
+    setCaminho(c);
+    setSegundos(0);
+    setCaminhaoLixo(false);
+    setTela('cronometro');
+    timerRef.current = setInterval(() => setSegundos(s => s + 1), 1000);
+  }
+
+  function parar() {
+    clearInterval(timerRef.current);
+    const t = salvarTrajeto(caminho, segundos, chuva, caminhaoLixo);
+    setUltimoSalvo(t);
+    setTela('principal');
+    setRec(calcularRecomendacao(chuva));
+  }
+
+  useEffect(() => () => clearInterval(timerRef.current), []);
+
+  if (tela === 'stats') return <Estatisticas onVoltar={() => setTela('principal')} />;
+  if (tela === 'cronometro') return (
+    <Cronometro
+      segundos={segundos}
+      caminho={caminho}
+      onParar={parar}
+      onCaminhaoLixo={() => setCaminhaoLixo(v => !v)}
+      caminhaoLixo={caminhaoLixo}
+    />
+  );
+
+  const agora = new Date();
+
+  return (
+    <div className="min-h-screen bg-gray-100">
+      <div className="bg-white shadow-sm px-4 py-3 flex items-center justify-between sticky top-0 z-10">
+        <h1 className="font-black text-gray-800 text-xl">Caminho</h1>
+        <button onClick={() => setTela('stats')}
+          className="text-sm text-gray-500 font-medium px-3 py-1.5 bg-gray-100 rounded-lg active:bg-gray-200">
+          Estatísticas
+        </button>
+      </div>
+
+      <div className="p-4">
+        <div className="text-xs text-gray-400 text-center mb-3">
+          {DIAS_FULL[agora.getDay()]} · {agora.getHours()}h{String(agora.getMinutes()).padStart(2,'0')}
+        </div>
+
+        <RecomendacaoCard rec={rec} />
+
+        {/* Toggle chuva */}
+        <div className="flex items-center justify-between bg-white rounded-xl px-4 py-3 shadow-sm mb-5">
+          <span className="font-semibold text-gray-700">🌧️ Está chovendo?</span>
+          <button
+            onClick={() => setChuva(v => !v)}
+            className={`relative w-12 h-6 rounded-full transition-colors duration-200 ${chuva ? 'bg-blue-500' : 'bg-gray-300'}`}
+          >
+            <span className={`absolute top-0.5 w-5 h-5 bg-white rounded-full shadow-sm transition-transform duration-200 ${chuva ? 'translate-x-6' : 'translate-x-0.5'}`} />
+          </button>
+        </div>
+
+        {/* Botões de início */}
+        <div className="space-y-3">
+          <button
+            onClick={() => iniciar('mergulhao')}
+            className={`w-full py-5 rounded-2xl font-black text-xl text-white shadow-lg active:scale-95 transition-transform flex items-center justify-center gap-3
+              ${rec?.caminho === 'mergulhao' ? 'bg-blue-600 ring-4 ring-blue-300' : 'bg-blue-500'}`}
+          >
+            {rec?.caminho === 'mergulhao' && <span>★</span>}
+            START — Mergulhão
+          </button>
+          <button
+            onClick={() => iniciar('rua_passagem')}
+            className={`w-full py-5 rounded-2xl font-black text-xl text-white shadow-lg active:scale-95 transition-transform flex items-center justify-center gap-3
+              ${rec?.caminho === 'rua_passagem' ? 'bg-emerald-600 ring-4 ring-emerald-300' : 'bg-emerald-500'}`}
+          >
+            {rec?.caminho === 'rua_passagem' && <span>★</span>}
+            START — Rua da Passagem
+          </button>
+        </div>
+
+        {/* Último salvo */}
+        {ultimoSalvo && (
+          <div className="mt-4 bg-white rounded-xl px-4 py-3 shadow-sm text-sm text-gray-500 text-center fade-in">
+            Salvo: <strong className="text-gray-700">
+              {ultimoSalvo.caminho === 'mergulhao' ? 'Mergulhão' : 'Rua da Passagem'}
+            </strong> em {fmtTempo(ultimoSalvo.tempoSegundos)}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>
