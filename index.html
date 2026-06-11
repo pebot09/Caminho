@@ -698,23 +698,42 @@ function App() {
   const [caminhaoLixo, setCaminhaoLixo] = useState(false);
   const [rec, setRec] = useState(() => calcularRecomendacao(false));
   const [ultimoSalvo, setUltimoSalvo] = useState(null);
-  const timerRef = useRef(null);
+  const timerRef    = useRef(null);
+  const startTimeRef = useRef(null);
 
   useEffect(() => {
     setRec(calcularRecomendacao(chuva));
   }, [chuva]);
+
+  // Corrige o timer ao voltar do background (visibilitychange)
+  useEffect(() => {
+    if (tela !== 'cronometro') return;
+    const handle = () => {
+      if (document.visibilityState === 'visible' && startTimeRef.current) {
+        setSegundos(Math.floor((Date.now() - startTimeRef.current) / 1000));
+      }
+    };
+    document.addEventListener('visibilitychange', handle);
+    return () => document.removeEventListener('visibilitychange', handle);
+  }, [tela]);
 
   function iniciar(c) {
     setCaminho(c);
     setSegundos(0);
     setCaminhaoLixo(false);
     setTela('cronometro');
-    timerRef.current = setInterval(() => setSegundos(s => s + 1), 1000);
+    startTimeRef.current = Date.now();
+    timerRef.current = setInterval(() => {
+      setSegundos(Math.floor((Date.now() - startTimeRef.current) / 1000));
+    }, 500);
   }
 
   function parar() {
     clearInterval(timerRef.current);
-    const t = salvarTrajeto(caminho, segundos, chuva, caminhaoLixo);
+    const finalSeg = startTimeRef.current
+      ? Math.floor((Date.now() - startTimeRef.current) / 1000)
+      : segundos;
+    const t = salvarTrajeto(caminho, finalSeg, chuva, caminhaoLixo);
     setUltimoSalvo(t);
     setTela('principal');
     setRec(calcularRecomendacao(chuva));
