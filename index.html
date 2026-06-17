@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <title>Caminho</title>
 
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
@@ -16,839 +16,485 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/react@18/umd/react.production.min.js" crossorigin></script>
-  <script src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
-  <script src="https://cdn.jsdelivr.net/npm/htm@3/dist/htm.js"></script>
   <style>
     *, *::before, *::after {
       font-family: 'Press Start 2P', monospace !important;
       box-sizing: border-box;
     }
-
     body {
       background: #0f380f;
       color: #9bbc0f;
       min-height: 100vh;
       margin: 0;
     }
-
     .fade-in { animation: fadeIn 0.15s ease-in; }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
 
-    .pb {
-      background: #122c14;
-      border: 3px solid #9bbc0f;
-      box-shadow: 4px 4px 0 #030a03;
-    }
-    .pb-blue {
-      background: #0a1e36;
-      border: 3px solid #4a90c8;
-      box-shadow: 4px 4px 0 #010508;
-    }
-    .pb-orange {
-      background: #2a1200;
-      border: 3px solid #c87820;
-      box-shadow: 4px 4px 0 #0a0400;
-    }
-    .pb-surface {
-      background: #0d220f;
-      border: 3px solid #306230;
-      box-shadow: 3px 3px 0 #030a03;
-    }
+    .pb { background:#122c14; border:3px solid #9bbc0f; box-shadow:4px 4px 0 #030a03; }
+    .pb-blue { background:#0a1e36; border:3px solid #4a90c8; box-shadow:4px 4px 0 #010508; }
+    .pb-orange { background:#2a1200; border:3px solid #c87820; box-shadow:4px 4px 0 #0a0400; }
+    .pb-surface { background:#0d220f; border:3px solid #306230; box-shadow:3px 3px 0 #030a03; }
 
     .btn {
-      display: block;
-      width: 100%;
-      padding: 18px 12px;
-      cursor: pointer;
-      text-transform: uppercase;
-      text-align: center;
-      letter-spacing: 1px;
-      line-height: 1.7;
-      transition: transform 0.05s, box-shadow 0.05s;
+      display:block; width:100%; padding:18px 12px; cursor:pointer;
+      text-transform:uppercase; text-align:center; letter-spacing:1px;
+      line-height:1.7; transition:transform 0.05s, box-shadow 0.05s;
     }
     .btn:active { transform: translate(3px, 3px); }
-
-    .btn-green {
-      background: #1a4020;
-      border: 3px solid #9bbc0f;
-      color: #9bbc0f;
-      box-shadow: 4px 4px 0 #030a03;
-      font-size: 11px;
-    }
-    .btn-green:active { box-shadow: 1px 1px 0 #030a03; }
-
-    .btn-blue {
-      background: #0a1e36;
-      border: 3px solid #4a90c8;
-      color: #4a90c8;
-      box-shadow: 4px 4px 0 #010508;
-      font-size: 11px;
-    }
-    .btn-blue:active { box-shadow: 1px 1px 0 #010508; }
-
-    .btn-red {
-      background: #280808;
-      border: 3px solid #c83030;
-      color: #ef8080;
-      box-shadow: 4px 4px 0 #0a0202;
-      font-size: 13px;
-      padding: 22px;
-    }
-    .btn-red:active { box-shadow: 1px 1px 0 #0a0202; }
-
-    .btn-orange {
-      background: #2a1200;
-      border: 3px solid #c87820;
-      color: #e8a040;
-      box-shadow: 4px 4px 0 #0a0400;
-    }
-    .btn-orange:active { box-shadow: 1px 1px 0 #0a0400; }
-
-    .btn-ghost {
-      background: #0d220f;
-      border: 3px solid #306230;
-      color: #8bac0f;
-      box-shadow: 3px 3px 0 #030a03;
-    }
-    .btn-ghost:active { box-shadow: 1px 1px 0 #030a03; }
+    .btn-green { background:#1a4020; border:3px solid #9bbc0f; color:#9bbc0f; box-shadow:4px 4px 0 #030a03; font-size:11px; }
+    .btn-green:active { box-shadow:1px 1px 0 #030a03; }
+    .btn-blue { background:#0a1e36; border:3px solid #4a90c8; color:#4a90c8; box-shadow:4px 4px 0 #010508; font-size:11px; }
+    .btn-blue:active { box-shadow:1px 1px 0 #010508; }
+    .btn-red { background:#280808; border:3px solid #c83030; color:#ef8080; box-shadow:4px 4px 0 #0a0202; font-size:13px; padding:22px; }
+    .btn-red:active { box-shadow:1px 1px 0 #0a0202; }
+    .btn-orange { background:#2a1200; border:3px solid #c87820; color:#e8a040; box-shadow:4px 4px 0 #0a0400; }
+    .btn-orange:active { box-shadow:1px 1px 0 #0a0400; }
+    .btn-ghost { background:#0d220f; border:3px solid #306230; color:#8bac0f; box-shadow:3px 3px 0 #030a03; }
+    .btn-ghost:active { box-shadow:1px 1px 0 #030a03; }
 
     .gb-header {
-      background: #08180a;
-      border-bottom: 3px solid #9bbc0f;
-      padding: 10px 14px;
-      position: sticky;
-      top: 0;
-      z-index: 10;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+      background:#08180a; border-bottom:3px solid #9bbc0f; padding:10px 14px;
+      position:sticky; top:0; z-index:10; display:flex; align-items:center; justify-content:space-between;
     }
-
-    .pbar-track {
-      background: #030a03;
-      border: 2px solid #8bac0f;
-      height: 14px;
-      overflow: hidden;
-    }
-    .pbar-green {
-      height: 100%;
-      background: repeating-linear-gradient(90deg, #9bbc0f 0, #9bbc0f 6px, #8bac0f 6px, #8bac0f 8px);
-    }
-    .pbar-blue {
-      height: 100%;
-      background: repeating-linear-gradient(90deg, #4a90c8 0, #4a90c8 6px, #2a6090 6px, #2a6090 8px);
-    }
+    .pbar-track { background:#030a03; border:2px solid #8bac0f; height:14px; overflow:hidden; }
+    .pbar-green { height:100%; background:repeating-linear-gradient(90deg,#9bbc0f 0,#9bbc0f 6px,#8bac0f 6px,#8bac0f 8px); }
+    .pbar-blue { height:100%; background:repeating-linear-gradient(90deg,#4a90c8 0,#4a90c8 6px,#2a6090 6px,#2a6090 8px); }
 
     select {
-      background: #122c14 !important;
-      color: #9bbc0f !important;
-      border: 2px solid #8bac0f !important;
-      font-size: 7px !important;
-      padding: 6px 4px !important;
-      width: 100%;
-      margin-top: 4px;
-      appearance: none;
+      background:#122c14 !important; color:#9bbc0f !important; border:2px solid #8bac0f !important;
+      font-size:7px !important; padding:6px 4px !important; width:100%; margin-top:4px; appearance:none;
     }
-
     .toggle-track {
-      width: 52px;
-      height: 26px;
-      position: relative;
-      cursor: pointer;
-      background: none;
-      border: 3px solid #306230;
-      box-shadow: 3px 3px 0 #030a03;
-      padding: 0;
+      width:52px; height:26px; position:relative; cursor:pointer; background:none;
+      border:3px solid #306230; box-shadow:3px 3px 0 #030a03; padding:0;
     }
-    .toggle-track.on { border-color: #4a90c8; }
-    .toggle-thumb {
-      position: absolute;
-      top: 2px;
-      width: 16px;
-      height: 16px;
-      transition: left 0.1s;
-    }
-    .toggle-track.off .toggle-thumb { left: 2px; background: #306230; }
-    .toggle-track.on  .toggle-thumb { left: 24px; background: #4a90c8; }
+    .toggle-track.on { border-color:#4a90c8; }
+    .toggle-thumb { position:absolute; top:2px; width:16px; height:16px; transition:left 0.1s; }
+    .toggle-track.off .toggle-thumb { left:2px; background:#306230; }
+    .toggle-track.on  .toggle-thumb { left:24px; background:#4a90c8; }
 
     body::after {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background: repeating-linear-gradient(
-        0deg,
-        transparent 0, transparent 3px,
-        rgba(0,0,0,0.07) 3px, rgba(0,0,0,0.07) 4px
-      );
-      pointer-events: none;
-      z-index: 9999;
+      content:''; position:fixed; inset:0;
+      background:repeating-linear-gradient(0deg, transparent 0, transparent 3px, rgba(0,0,0,0.07) 3px, rgba(0,0,0,0.07) 4px);
+      pointer-events:none; z-index:9999;
     }
-
     .sec-title {
-      font-size: 9px;
-      color: #9bbc0f;
-      border-bottom: 2px solid #306230;
-      padding-bottom: 8px;
-      margin-bottom: 12px;
-      letter-spacing: 1px;
+      font-size:9px; color:#9bbc0f; border-bottom:2px solid #306230;
+      padding-bottom:8px; margin-bottom:12px; letter-spacing:1px;
     }
-
-    .dot-blue  { width: 8px; height: 8px; background: #4a90c8; flex-shrink: 0; }
-    .dot-green { width: 8px; height: 8px; background: #9bbc0f; flex-shrink: 0; }
+    .dot-blue  { width:8px; height:8px; background:#4a90c8; flex-shrink:0; display:inline-block; }
+    .dot-green { width:8px; height:8px; background:#9bbc0f; flex-shrink:0; display:inline-block; }
   </style>
 </head>
 <body>
-<div id="root"><p style="color:#9bbc0f;text-align:center;padding:40px;font-family:monospace;font-size:12px">Carregando...</p></div>
+<div id="root"></div>
 <script>
-var html = htm.bind(React.createElement);
-var useState = React.useState;
-var useEffect = React.useEffect;
-var useRef = React.useRef;
-var useMemo = React.useMemo;
-
+(function() {
 var STORAGE_KEY = 'trajetos_historico';
-var DIAS = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
-var DIAS_FULL = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
+var DIAS = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+var DIAS_FULL = ['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'];
 
+// ===== DATA =====
 function obterHistorico() {
-  try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); }
-  catch(e) { return []; }
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); } catch(e) { return []; }
 }
-
 function salvarTrajeto(caminho, tempoSegundos, chuva, caminhaoLixo) {
   var agora = new Date();
   var trajeto = {
-    id: Date.now(),
-    data: agora.toISOString(),
-    diaSemana: agora.getDay(),
-    hora: agora.getHours(),
-    caminho: caminho,
-    tempoSegundos: tempoSegundos,
-    chuva: chuva,
-    caminhaoLixo: caminho === 'rua_passagem' ? caminhaoLixo : false,
+    id: Date.now(), data: agora.toISOString(), diaSemana: agora.getDay(),
+    hora: agora.getHours(), caminho: caminho, tempoSegundos: tempoSegundos,
+    chuva: chuva, caminhaoLixo: caminho === 'rua_passagem' ? caminhaoLixo : false
   };
-  var historico = obterHistorico();
-  historico.push(trajeto);
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(historico));
+  var h = obterHistorico(); h.push(trajeto);
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(h));
   return trajeto;
 }
-
 function deletarTrajeto(id) {
-  var historico = obterHistorico().filter(function(t) { return t.id !== id; });
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(historico));
+  var h = obterHistorico().filter(function(t){return t.id !== id;});
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(h));
 }
 
+// ===== CALC =====
 function calcMediana(arr) {
   if (!arr.length) return null;
-  var s = arr.slice().sort(function(a, b) { return a - b; });
-  var m = Math.floor(s.length / 2);
-  return s.length % 2 === 0 ? (s[m - 1] + s[m]) / 2 : s[m];
+  var s = arr.slice().sort(function(a,b){return a-b;}); var m = Math.floor(s.length/2);
+  return s.length % 2 === 0 ? (s[m-1]+s[m])/2 : s[m];
 }
-
 function calcMedia(arr) {
   if (!arr.length) return null;
-  return arr.reduce(function(a, b) { return a + b; }, 0) / arr.length;
+  return arr.reduce(function(a,b){return a+b;},0) / arr.length;
 }
-
 function calcDesvio(arr) {
   if (arr.length < 2) return 0;
   var media = calcMedia(arr);
-  return Math.sqrt(arr.reduce(function(s, v) { return s + Math.pow(v - media, 2); }, 0) / arr.length);
+  return Math.sqrt(arr.reduce(function(s,v){return s+Math.pow(v-media,2);},0)/arr.length);
 }
-
-function calcProbabilidadeMelhor(temposA, temposB) {
-  if (!temposA.length || !temposB.length) return null;
-  var c = 0, total = 0;
-  for (var i = 0; i < temposA.length; i++) {
-    for (var j = 0; j < temposB.length; j++) {
-      if (temposA[i] < temposB[j]) c++;
-      total++;
-    }
-  }
-  return total > 0 ? c / total : null;
+function calcProb(tA,tB) {
+  if (!tA.length || !tB.length) return null;
+  var c=0,tot=0;
+  for (var i=0;i<tA.length;i++) for (var j=0;j<tB.length;j++) { if(tA[i]<tB[j]) c++; tot++; }
+  return tot>0?c/tot:null;
 }
-
-function filtrarContexto(historico, hora, diaSemana, chuva, janela) {
-  return historico.filter(function(t) {
-    if (t.chuva !== chuva) return false;
-    if (t.diaSemana !== diaSemana) return false;
-    var hMin = hora - janela, hMax = hora + janela;
-    return t.hora >= Math.max(0, hMin) && t.hora <= Math.min(23, hMax);
+function filtrarCtx(hist,hora,dia,chuva,janela) {
+  return hist.filter(function(t){
+    if(t.chuva!==chuva) return false;
+    if(t.diaSemana!==dia) return false;
+    return t.hora>=Math.max(0,hora-janela) && t.hora<=Math.min(23,hora+janela);
   });
 }
-
-function calcularRecomendacao(chuva) {
-  var agora = new Date();
-  var hora = agora.getHours();
-  var dia = agora.getDay();
-  var hist = obterHistorico();
-
-  var ctx = filtrarContexto(hist, hora, dia, chuva, 1);
-  if (ctx.length < 6) ctx = filtrarContexto(hist, hora, dia, chuva, 2);
-  if (ctx.length < 4) {
-    ctx = hist.filter(function(t) {
-      return t.diaSemana === dia &&
-        t.hora >= Math.max(0, hora - 2) &&
-        t.hora <= Math.min(23, hora + 2);
-    });
-  }
-
-  var tM = ctx.filter(function(t) { return t.caminho === 'mergulhao'; }).map(function(t) { return t.tempoSegundos; });
-  var tR = ctx.filter(function(t) { return t.caminho === 'rua_passagem'; }).map(function(t) { return t.tempoSegundos; });
-  var MIN = 3;
-
-  if (tM.length < MIN && tR.length < MIN) {
-    return { tipo: 'sem_dados', contM: tM.length, contR: tR.length };
-  }
-  if (tM.length < MIN) return { tipo: 'teste', caminho: 'mergulhao', caminhoNome: 'Mergulhão' };
-  if (tR.length < MIN) return { tipo: 'teste', caminho: 'rua_passagem', caminhoNome: 'Rua da Passagem' };
-
-  var medM = calcMediana(tM), medR = calcMediana(tR);
-  var devM = calcDesvio(tM), devR = calcDesvio(tR);
-  var prob = calcProbabilidadeMelhor(tM, tR);
-  if (prob === null) prob = 0.5;
-  var diff = Math.abs(medR - medM);
-  var proximo = diff <= 30 && prob >= 0.4 && prob <= 0.6;
-  var caminho = prob >= 0.5 ? 'mergulhao' : 'rua_passagem';
-  var caminhoNome = prob >= 0.5 ? 'Mergulhão' : 'Rua da Passagem';
-  var medEscolhida = caminho === 'mergulhao' ? medM : medR;
-  var devEscolhido = caminho === 'mergulhao' ? devM : devR;
-  var probabilidade = Math.round(Math.max(prob, 1 - prob) * 100);
-
+function calcRec(chuva) {
+  var agora = new Date(), hora = agora.getHours(), dia = agora.getDay(), hist = obterHistorico();
+  var ctx = filtrarCtx(hist,hora,dia,chuva,1);
+  if (ctx.length<6) ctx = filtrarCtx(hist,hora,dia,chuva,2);
+  if (ctx.length<4) ctx = hist.filter(function(t){
+    return t.diaSemana===dia && t.hora>=Math.max(0,hora-2) && t.hora<=Math.min(23,hora+2);
+  });
+  var tM=ctx.filter(function(t){return t.caminho==='mergulhao';}).map(function(t){return t.tempoSegundos;});
+  var tR=ctx.filter(function(t){return t.caminho==='rua_passagem';}).map(function(t){return t.tempoSegundos;});
+  var MIN=3;
+  if(tM.length<MIN && tR.length<MIN) return {tipo:'sem_dados',contM:tM.length,contR:tR.length};
+  if(tM.length<MIN) return {tipo:'teste',caminho:'mergulhao',caminhoNome:'Mergulhão'};
+  if(tR.length<MIN) return {tipo:'teste',caminho:'rua_passagem',caminhoNome:'Rua da Passagem'};
+  var medM=calcMediana(tM),medR=calcMediana(tR),devM=calcDesvio(tM),devR=calcDesvio(tR);
+  var prob=calcProb(tM,tR); if(prob===null) prob=0.5;
+  var diff=Math.abs(medR-medM), proximo=diff<=30&&prob>=0.4&&prob<=0.6;
+  var cam=prob>=0.5?'mergulhao':'rua_passagem', nome=prob>=0.5?'Mergulhão':'Rua da Passagem';
+  var medE=cam==='mergulhao'?medM:medR, devE=cam==='mergulhao'?devM:devR;
   return {
-    tipo: proximo ? 'proximo' : 'claro',
-    caminho: caminho, caminhoNome: caminhoNome,
-    estimadoMin: Math.floor(Math.max(medEscolhida - devEscolhido, 60) / 60),
-    estimadoMax: Math.ceil((medEscolhida + devEscolhido) / 60),
-    probabilidade: probabilidade,
-    medM: medM, medR: medR,
+    tipo:proximo?'proximo':'claro', caminho:cam, caminhoNome:nome,
+    estimadoMin:Math.floor(Math.max(medE-devE,60)/60), estimadoMax:Math.ceil((medE+devE)/60),
+    probabilidade:Math.round(Math.max(prob,1-prob)*100), medM:medM, medR:medR
   };
 }
 
-function fmtTempo(seg) {
-  var m = Math.floor(seg / 60), s = seg % 60;
-  return m + ':' + String(s).padStart(2, '0');
-}
-
+// ===== UTILS =====
+function fmt(seg) { var m=Math.floor(seg/60),s=seg%60; return m+':'+String(s).padStart(2,'0'); }
 function fmtData(iso) {
-  var d = new Date(iso);
-  return DIAS[d.getDay()] + ' ' + String(d.getDate()).padStart(2,'0') + '/' + String(d.getMonth()+1).padStart(2,'0') + ' ' + d.getHours() + ':' + String(d.getMinutes()).padStart(2,'0');
+  var d=new Date(iso);
+  return DIAS[d.getDay()]+' '+String(d.getDate()).padStart(2,'0')+'/'+String(d.getMonth()+1).padStart(2,'0')+' '+d.getHours()+':'+String(d.getMinutes()).padStart(2,'0');
+}
+function esc(s) { var d=document.createElement('div'); d.textContent=s; return d.innerHTML; }
+
+// ===== STATE =====
+var S = {
+  tela:'principal', chuva:false, caminho:null, segundos:0,
+  caminhaoLixo:false, rec:null, ultimoSalvo:null,
+  filtroDia:'todos', filtroChuva:'todos', confirmDelete:null
+};
+var timerRef=null, startTime=null;
+
+// ===== RENDER HELPERS =====
+function renderBarra(label,valor,maximo,isBlue,count) {
+  var pct = maximo>0 ? Math.round((valor/maximo)*100) : 0;
+  return '<div style="margin-bottom:16px">'+
+    '<div style="display:flex;justify-content:space-between;font-size:7px;margin-bottom:6px;line-height:2">'+
+      '<span style="color:#9bbc0f">'+esc(label.toUpperCase())+'</span>'+
+      '<span style="color:#8bac0f">'+fmt(Math.round(valor))+' ('+count+'×)</span>'+
+    '</div>'+
+    '<div class="pbar-track"><div class="'+(isBlue?'pbar-blue':'pbar-green')+'" style="width:'+pct+'%"></div></div>'+
+  '</div>';
 }
 
-function RecomendacaoCard(props) {
-  var rec = props.rec;
-  if (!rec) return null;
+function renderRec() {
+  var r = S.rec;
+  if (!r) return '';
+  if (r.tipo==='sem_dados') return '<div class="pb-surface fade-in" style="padding:16px;margin-bottom:12px;text-align:center">'+
+    '<div style="font-size:8px;color:#306230;margin-bottom:10px;letter-spacing:2px">[ ANÁLISE ]</div>'+
+    '<p style="font-size:8px;color:#9bbc0f;margin-bottom:10px;line-height:2">DADOS INSUFICIENTES</p>'+
+    '<p style="font-size:7px;color:#8bac0f;line-height:2.2">Registre mais trajetos.<br>MERG: '+r.contM+' · RUA: '+r.contR+'</p></div>';
+  if (r.tipo==='teste') return '<div class="pb-orange fade-in" style="padding:16px;margin-bottom:12px;text-align:center">'+
+    '<div style="font-size:7px;color:#c87820;margin-bottom:8px;letter-spacing:2px">[ SUGESTÃO ]</div>'+
+    '<div style="font-size:9px;color:#e8a040;line-height:2">TESTE O<br>'+esc(r.caminhoNome.toUpperCase())+'</div></div>';
 
-  if (rec.tipo === 'sem_dados') return html`
-    <div className="pb-surface fade-in" style=${{padding:'16px', marginBottom:'12px', textAlign:'center'}}>
-      <div style=${{fontSize:'8px', color:'#306230', marginBottom:'10px', letterSpacing:'2px'}}>[ ANÁLISE ]</div>
-      <p style=${{fontSize:'8px', color:'#9bbc0f', marginBottom:'10px', lineHeight:'2'}}>DADOS INSUFICIENTES</p>
-      <p style=${{fontSize:'7px', color:'#8bac0f', lineHeight:'2.2'}}>
-        Registre mais trajetos.<br />
-        MERG: ${rec.contM} ${'  ·  '} RUA: ${rec.contR}
-      </p>
-    </div>
-  `;
-
-  if (rec.tipo === 'teste') return html`
-    <div className="pb-orange fade-in" style=${{padding:'16px', marginBottom:'12px', textAlign:'center'}}>
-      <div style=${{fontSize:'7px', color:'#c87820', marginBottom:'8px', letterSpacing:'2px'}}>[ SUGESTÃO ]</div>
-      <div style=${{fontSize:'9px', color:'#e8a040', lineHeight:'2'}}>
-        TESTE O<br />${rec.caminhoNome.toUpperCase()}
-      </div>
-    </div>
-  `;
-
-  var isBlue = rec.caminho === 'mergulhao';
-  var accent = isBlue ? '#4a90c8' : '#9bbc0f';
-  var muted  = isBlue ? '#2a6090' : '#306230';
-
-  return html`
-    <div className=${isBlue ? 'pb-blue fade-in' : 'pb fade-in'} style=${{padding:'16px', marginBottom:'12px'}}>
-      <div style=${{display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:'10px'}}>
-        <span style=${{fontSize:'7px', color: muted, letterSpacing:'1px'}}>
-          ${rec.tipo === 'claro' ? '[ RECOMENDADO ]' : '[ QUASE IGUAL ]'}
-        </span>
-        <span style=${{
-          fontSize:'7px', padding:'3px 8px',
-          background: isBlue ? '#0a1e36' : '#122c14',
-          border: '2px solid ' + accent,
-          color: accent,
-        }}>
-          ${rec.probabilidade}%
-        </span>
-      </div>
-      <div style=${{fontSize:'13px', color: accent, marginBottom:'8px', lineHeight:'1.5'}}>
-        ▶ ${rec.caminhoNome.toUpperCase()}
-      </div>
-      <div style=${{fontSize:'8px', color: muted, lineHeight:'2'}}>
-        EST: <span style=${{color: accent}}>${rec.estimadoMin}–${rec.estimadoMax} MIN</span>
-      </div>
-      ${rec.medM && rec.medR ? html`
-        <div style=${{fontSize:'7px', color: muted, marginTop:'8px', lineHeight:'2'}}>
-          MERG ${fmtTempo(Math.round(rec.medM))} · RUA ${fmtTempo(Math.round(rec.medR))}
-        </div>
-      ` : null}
-    </div>
-  `;
+  var isB = r.caminho==='mergulhao';
+  var ac = isB?'#4a90c8':'#9bbc0f', mu = isB?'#2a6090':'#306230';
+  var box = isB?'pb-blue':'pb';
+  var lbl = r.tipo==='claro'?'[ RECOMENDADO ]':'[ QUASE IGUAL ]';
+  var bg = isB?'#0a1e36':'#122c14';
+  var s = '<div class="'+box+' fade-in" style="padding:16px;margin-bottom:12px">'+
+    '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">'+
+      '<span style="font-size:7px;color:'+mu+';letter-spacing:1px">'+lbl+'</span>'+
+      '<span style="font-size:7px;padding:3px 8px;background:'+bg+';border:2px solid '+ac+';color:'+ac+'">'+r.probabilidade+'%</span>'+
+    '</div>'+
+    '<div style="font-size:13px;color:'+ac+';margin-bottom:8px;line-height:1.5">▶ '+esc(r.caminhoNome.toUpperCase())+'</div>'+
+    '<div style="font-size:8px;color:'+mu+';line-height:2">EST: <span style="color:'+ac+'">'+r.estimadoMin+'–'+r.estimadoMax+' MIN</span></div>';
+  if (r.medM && r.medR) s += '<div style="font-size:7px;color:'+mu+';margin-top:8px;line-height:2">MERG '+fmt(Math.round(r.medM))+' · RUA '+fmt(Math.round(r.medR))+'</div>';
+  s += '</div>';
+  return s;
 }
 
-function Cronometro(props) {
-  var segundos = props.segundos;
-  var caminho = props.caminho;
-  var onParar = props.onParar;
-  var onCaminhaoLixo = props.onCaminhaoLixo;
-  var caminhaoLixo = props.caminhaoLixo;
-  var isBlue = caminho === 'mergulhao';
-  var nome   = isBlue ? 'MERGULHÃO' : 'RUA DA PASSAGEM';
-  var accent = isBlue ? '#4a90c8' : '#9bbc0f';
-  var glow   = isBlue ? '#1a4a7a' : '#306230';
-
-  return html`
-    <div style=${{
-      minHeight: '100vh',
-      background: '#0f380f',
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      justifyContent: 'center',
-      padding: '24px',
-      gap: '20px',
-    }}>
-      <div className=${isBlue ? 'pb-blue' : 'pb'} style=${{width:'100%', maxWidth:'320px', padding:'12px', textAlign:'center'}}>
-        <div style=${{fontSize:'7px', color: isBlue ? '#2a6090' : '#306230', marginBottom:'6px', letterSpacing:'2px'}}>
-          ROTA ATIVA
-        </div>
-        <div style=${{fontSize:'9px', color: accent}}>${nome}</div>
-      </div>
-
-      <div className=${isBlue ? 'pb-blue' : 'pb'} style=${{width:'100%', maxWidth:'320px', padding:'28px 16px', textAlign:'center'}}>
-        <div style=${{
-          fontSize: '44px',
-          color: accent,
-          letterSpacing: '4px',
-          lineHeight: '1',
-          textShadow: '0 0 18px ' + glow,
-        }}>
-          ${fmtTempo(segundos)}
-        </div>
-      </div>
-
-      ${caminho === 'rua_passagem' ? html`
-        <button
-          onClick=${onCaminhaoLixo}
-          className=${'btn ' + (caminhaoLixo ? 'btn-orange' : 'btn-ghost')}
-          style=${{maxWidth:'320px', fontSize:'9px', padding:'14px'}}
-        >
-          ${caminhaoLixo ? '■' : '□'} CAMINHÃO DE LIXO
-        </button>
-      ` : null}
-
-      <button
-        onClick=${onParar}
-        className="btn btn-red"
-        style=${{maxWidth:'320px'}}
-      >
-        ■ PARAR
-      </button>
-    </div>
-  `;
-}
-
-function Barra(props) {
-  var label = props.label;
-  var valor = props.valor;
-  var maximo = props.maximo;
-  var cor = props.cor;
-  var count = props.count;
-  var pct = maximo > 0 ? Math.round((valor / maximo) * 100) : 0;
-  var isBlue = cor.indexOf('blue') >= 0;
-  return html`
-    <div style=${{marginBottom:'16px'}}>
-      <div style=${{display:'flex', justifyContent:'space-between', fontSize:'7px', marginBottom:'6px', lineHeight:'2'}}>
-        <span style=${{color:'#9bbc0f'}}>${label.toUpperCase()}</span>
-        <span style=${{color:'#8bac0f'}}>${fmtTempo(Math.round(valor))} (${count}×)</span>
-      </div>
-      <div className="pbar-track">
-        <div className=${isBlue ? 'pbar-blue' : 'pbar-green'} style=${{width: pct + '%'}} />
-      </div>
-    </div>
-  `;
-}
-
-function Estatisticas(props) {
-  var onVoltar = props.onVoltar;
-  var histState = useState(obterHistorico);
-  var hist = histState[0], setHist = histState[1];
-  var filtroState = useState({ dia: 'todos', chuva: 'todos' });
-  var filtro = filtroState[0], setFiltro = filtroState[1];
-  var deleteState = useState(null);
-  var confirmDelete = deleteState[0], setConfirmDelete = deleteState[1];
-
-  function handleDelete(id) {
-    deletarTrajeto(id);
-    setHist(obterHistorico());
-    setConfirmDelete(null);
-  }
-
-  var filtrados = useMemo(function() {
-    return hist.filter(function(t) {
-      if (filtro.dia !== 'todos' && t.diaSemana !== parseInt(filtro.dia)) return false;
-      if (filtro.chuva === 'sim' && !t.chuva) return false;
-      if (filtro.chuva === 'nao' && t.chuva) return false;
-      return true;
-    });
-  }, [hist, filtro]);
-
-  var tM = filtrados.filter(function(t) { return t.caminho === 'mergulhao'; }).map(function(t) { return t.tempoSegundos; });
-  var tR = filtrados.filter(function(t) { return t.caminho === 'rua_passagem'; }).map(function(t) { return t.tempoSegundos; });
-  var mediaM = calcMedia(tM), mediaR = calcMedia(tR);
-  var maxGeral = Math.max(mediaM || 0, mediaR || 0);
-
-  var porDia = useMemo(function() {
-    return [1,2,3,4,5,6,0].map(function(dia) {
-      var dT = filtrados.filter(function(t) { return t.diaSemana === dia; });
-      var m = calcMedia(dT.filter(function(t) { return t.caminho === 'mergulhao'; }).map(function(t) { return t.tempoSegundos; }));
-      var r = calcMedia(dT.filter(function(t) { return t.caminho === 'rua_passagem'; }).map(function(t) { return t.tempoSegundos; }));
-      return { dia: dia, m: m, r: r, total: dT.length };
-    }).filter(function(d) { return d.total > 0; });
-  }, [filtrados]);
-
-  var chuvaStats = useMemo(function() {
-    return ['mergulhao', 'rua_passagem'].map(function(c) {
-      var semC = hist.filter(function(t) { return t.caminho === c && !t.chuva; }).map(function(t) { return t.tempoSegundos; });
-      var comC = hist.filter(function(t) { return t.caminho === c && t.chuva; }).map(function(t) { return t.tempoSegundos; });
-      return { nome: c === 'mergulhao' ? 'MERGULHÃO' : 'RUA DA PASSAGEM', semC: semC, comC: comC };
-    });
-  }, [hist]);
-
-  var caminhaoStats = useMemo(function() {
-    var rua = hist.filter(function(t) { return t.caminho === 'rua_passagem'; });
-    var com = rua.filter(function(t) { return t.caminhaoLixo; });
-    var sem = rua.filter(function(t) { return !t.caminhaoLixo; });
-    return {
-      total: rua.length, qtdCom: com.length,
-      mediaCom: calcMedia(com.map(function(t) { return t.tempoSegundos; })),
-      mediaSem: calcMedia(sem.map(function(t) { return t.tempoSegundos; })),
-    };
-  }, [hist]);
-
-  function T(props) {
-    return html`<div className="sec-title">▶ ${props.children}</div>`;
-  }
-
-  return html`
-    <div style=${{minHeight:'100vh', background:'#0f380f', paddingBottom:'40px'}}>
-      <div className="gb-header">
-        <button
-          onClick=${onVoltar}
-          style=${{fontSize:'8px', color:'#9bbc0f', background:'none', border:'none', cursor:'pointer', padding:'0'}}
-        >
-          ← VOLTAR
-        </button>
-        <span style=${{fontSize:'10px', color:'#9bbc0f'}}>ESTATÍSTICAS</span>
-        <span style=${{fontSize:'7px', color:'#8bac0f'}}>${hist.length} REG</span>
-      </div>
-
-      <div style=${{padding:'12px', display:'flex', flexDirection:'column', gap:'12px'}}>
-
-        <div className="pb-surface" style=${{padding:'12px'}}>
-          <${T}>FILTROS</${T}>
-          <div style=${{display:'grid', gridTemplateColumns:'1fr 1fr', gap:'12px'}}>
-            <div>
-              <div style=${{fontSize:'7px', color:'#306230', letterSpacing:'1px'}}>DIA</div>
-              <select value=${filtro.dia} onChange=${function(e) { setFiltro(function(f) { return Object.assign({}, f, {dia: e.target.value}); }); }}>
-                <option value="todos">TODOS</option>
-                ${[1,2,3,4,5,6,0].map(function(d) { return html`<option key=${d} value=${d}>${DIAS_FULL[d].toUpperCase()}</option>`; })}
-              </select>
-            </div>
-            <div>
-              <div style=${{fontSize:'7px', color:'#306230', letterSpacing:'1px'}}>CHUVA</div>
-              <select value=${filtro.chuva} onChange=${function(e) { setFiltro(function(f) { return Object.assign({}, f, {chuva: e.target.value}); }); }}>
-                <option value="todos">TODOS</option>
-                <option value="nao">SEM CHUVA</option>
-                <option value="sim">COM CHUVA</option>
-              </select>
-            </div>
-          </div>
-        </div>
-
-        <div className="pb-surface" style=${{padding:'12px'}}>
-          <${T}>MÉDIA GERAL</${T}>
-          ${mediaM
-            ? html`<${Barra} label="Mergulhão" valor=${mediaM} maximo=${maxGeral} cor="bg-blue-500" count=${tM.length} />`
-            : html`<p style=${{fontSize:'7px', color:'#306230', lineHeight:'2'}}>SEM DADOS — MERGULHÃO</p>`}
-          ${mediaR
-            ? html`<${Barra} label="Rua da Passagem" valor=${mediaR} maximo=${maxGeral} cor="bg-emerald-500" count=${tR.length} />`
-            : html`<p style=${{fontSize:'7px', color:'#306230', lineHeight:'2'}}>SEM DADOS — RUA</p>`}
-        </div>
-
-        ${porDia.length > 0 ? html`
-          <div className="pb-surface" style=${{padding:'12px'}}>
-            <${T}>POR DIA DA SEMANA</${T}>
-            ${porDia.map(function(item) {
-              var dia = item.dia, m = item.m, r = item.r;
-              var mx = Math.max(m || 0, r || 0);
-              var cntM = filtrados.filter(function(t) { return t.diaSemana === dia && t.caminho === 'mergulhao'; }).length;
-              var cntR = filtrados.filter(function(t) { return t.diaSemana === dia && t.caminho === 'rua_passagem'; }).length;
-              return html`
-                <div key=${dia} style=${{marginBottom:'16px'}}>
-                  <div style=${{fontSize:'7px', color:'#8bac0f', letterSpacing:'2px', marginBottom:'8px'}}>
-                    [${DIAS_FULL[dia].toUpperCase()}]
-                  </div>
-                  ${m ? html`<${Barra} label="Mergulhão" valor=${m} maximo=${mx} cor="bg-blue-400" count=${cntM} />` : null}
-                  ${r ? html`<${Barra} label="Rua" valor=${r} maximo=${mx} cor="bg-emerald-400" count=${cntR} />` : null}
-                </div>
-              `;
-            })}
-          </div>
-        ` : null}
-
-        <div className="pb-surface" style=${{padding:'12px'}}>
-          <${T}>IMPACTO DA CHUVA</${T}>
-          ${chuvaStats.map(function(item) {
-            var nome = item.nome, semC = item.semC, comC = item.comC;
-            return html`
-              <div key=${nome} style=${{marginBottom:'16px'}}>
-                <div style=${{fontSize:'7px', color:'#8bac0f', marginBottom:'8px', lineHeight:'2'}}>${nome}</div>
-                <div style=${{display:'grid', gridTemplateColumns:'1fr 1fr', gap:'8px'}}>
-                  <div className="pb-surface" style=${{padding:'8px', textAlign:'center', border:'2px solid #306230'}}>
-                    <div style=${{fontSize:'7px', color:'#306230', marginBottom:'6px', lineHeight:'2'}}>SEM (${semC.length}×)</div>
-                    <div style=${{fontSize:'10px', color:'#9bbc0f'}}>${semC.length ? fmtTempo(Math.round(calcMedia(semC))) : '—'}</div>
-                  </div>
-                  <div className="pb-blue" style=${{padding:'8px', textAlign:'center'}}>
-                    <div style=${{fontSize:'7px', color:'#2a6090', marginBottom:'6px', lineHeight:'2'}}>COM (${comC.length}×)</div>
-                    <div style=${{fontSize:'10px', color:'#4a90c8'}}>${comC.length ? fmtTempo(Math.round(calcMedia(comC))) : '—'}</div>
-                  </div>
-                </div>
-              </div>
-            `;
-          })}
-        </div>
-
-        ${caminhaoStats.total > 0 ? html`
-          <div className="pb-surface" style=${{padding:'12px'}}>
-            <${T}>CAMINHÃO DE LIXO</${T}>
-            <p style=${{fontSize:'7px', color:'#8bac0f', lineHeight:'2.2', marginBottom:'12px'}}>
-              ENCONTRADO ${caminhaoStats.qtdCom}/${caminhaoStats.total} VEZES
-              (${Math.round(caminhaoStats.qtdCom / caminhaoStats.total * 100)}%)
-            </p>
-            <div style=${{display:'grid', gridTemplateColumns:'1fr 1fr', gap:'8px'}}>
-              <div className="pb-surface" style=${{padding:'8px', textAlign:'center', border:'2px solid #306230'}}>
-                <div style=${{fontSize:'7px', color:'#306230', marginBottom:'6px', lineHeight:'2'}}>SEM</div>
-                <div style=${{fontSize:'10px', color:'#9bbc0f'}}>
-                  ${caminhaoStats.mediaSem ? fmtTempo(Math.round(caminhaoStats.mediaSem)) : '—'}
-                </div>
-              </div>
-              <div className="pb-orange" style=${{padding:'8px', textAlign:'center'}}>
-                <div style=${{fontSize:'7px', color:'#c87820', marginBottom:'6px', lineHeight:'2'}}>COM</div>
-                <div style=${{fontSize:'10px', color:'#e8a040'}}>
-                  ${caminhaoStats.mediaCom ? fmtTempo(Math.round(caminhaoStats.mediaCom)) : '—'}
-                </div>
-              </div>
-            </div>
-          </div>
-        ` : null}
-
-        <div className="pb-surface" style=${{padding:'12px'}}>
-          <${T}>HISTÓRICO</${T}>
-          ${filtrados.length === 0
-            ? html`<p style=${{fontSize:'7px', color:'#306230', textAlign:'center', padding:'16px', lineHeight:'2'}}>
-                NENHUM TRAJETO REGISTRADO
-              </p>`
-            : filtrados.slice().reverse().map(function(t) {
-              return html`
-                <div key=${t.id} style=${{
-                  display:'flex', alignItems:'center', gap:'8px',
-                  padding:'10px 0',
-                  borderBottom:'1px solid #1a3a1a',
-                  fontSize:'7px',
-                }}>
-                  <div className=${t.caminho === 'mergulhao' ? 'dot-blue' : 'dot-green'} />
-                  <div style=${{flex:1, minWidth:0}}>
-                    <div style=${{color:'#9bbc0f', lineHeight:'2'}}>
-                      ${t.caminho === 'mergulhao' ? 'MERGULHÃO' : 'RUA'}
-                      ${t.chuva ? ' [CHUVA]' : ''}${t.caminhaoLixo ? ' [LIXO]' : ''}
-                    </div>
-                    <div style=${{color:'#306230', lineHeight:'2'}}>${fmtData(t.data)}</div>
-                  </div>
-                  <div style=${{color:'#8bac0f', fontWeight:'bold'}}>${fmtTempo(t.tempoSegundos)}</div>
-                  ${confirmDelete === t.id ? html`
-                    <div style=${{display:'flex', gap:'4px'}}>
-                      <button
-                        onClick=${function() { handleDelete(t.id); }}
-                        style=${{fontSize:'7px', background:'#280808', border:'2px solid #c83030', color:'#ef8080', padding:'4px 6px', cursor:'pointer'}}
-                      >✓</button>
-                      <button
-                        onClick=${function() { setConfirmDelete(null); }}
-                        style=${{fontSize:'7px', background:'#0d220f', border:'2px solid #306230', color:'#9bbc0f', padding:'4px 6px', cursor:'pointer'}}
-                      >✗</button>
-                    </div>
-                  ` : html`
-                    <button
-                      onClick=${function() { setConfirmDelete(t.id); }}
-                      style=${{fontSize:'14px', background:'none', border:'none', color:'#306230', cursor:'pointer', padding:'0 4px'}}
-                    >×</button>
-                  `}
-                </div>
-              `;
-            })
-          }
-        </div>
-
-      </div>
-    </div>
-  `;
-}
-
-function App() {
-  var telaState = useState('principal');
-  var tela = telaState[0], setTela = telaState[1];
-  var chuvaState = useState(false);
-  var chuva = chuvaState[0], setChuva = chuvaState[1];
-  var caminhoState = useState(null);
-  var caminho = caminhoState[0], setCaminho = caminhoState[1];
-  var segState = useState(0);
-  var segundos = segState[0], setSegundos = segState[1];
-  var clState = useState(false);
-  var caminhaoLixo = clState[0], setCaminhaoLixo = clState[1];
-  var recState = useState(function() { return calcularRecomendacao(false); });
-  var rec = recState[0], setRec = recState[1];
-  var usState = useState(null);
-  var ultimoSalvo = usState[0], setUltimoSalvo = usState[1];
-  var timerRef = useRef(null);
-  var startTimeRef = useRef(null);
-
-  useEffect(function() {
-    setRec(calcularRecomendacao(chuva));
-  }, [chuva]);
-
-  useEffect(function() {
-    if (tela !== 'cronometro') return;
-    var handle = function() {
-      if (document.visibilityState === 'visible' && startTimeRef.current) {
-        setSegundos(Math.floor((Date.now() - startTimeRef.current) / 1000));
-      }
-    };
-    document.addEventListener('visibilitychange', handle);
-    return function() { document.removeEventListener('visibilitychange', handle); };
-  }, [tela]);
-
-  function iniciar(c) {
-    setCaminho(c);
-    setSegundos(0);
-    setCaminhaoLixo(false);
-    setTela('cronometro');
-    startTimeRef.current = Date.now();
-    timerRef.current = setInterval(function() {
-      setSegundos(Math.floor((Date.now() - startTimeRef.current) / 1000));
-    }, 500);
-  }
-
-  function parar() {
-    clearInterval(timerRef.current);
-    var finalSeg = startTimeRef.current
-      ? Math.floor((Date.now() - startTimeRef.current) / 1000)
-      : segundos;
-    var t = salvarTrajeto(caminho, finalSeg, chuva, caminhaoLixo);
-    setUltimoSalvo(t);
-    setTela('principal');
-    setRec(calcularRecomendacao(chuva));
-  }
-
-  useEffect(function() {
-    return function() { clearInterval(timerRef.current); };
-  }, []);
-
-  if (tela === 'stats') return html`<${Estatisticas} onVoltar=${function() { setTela('principal'); }} />`;
-  if (tela === 'cronometro') return html`
-    <${Cronometro}
-      segundos=${segundos}
-      caminho=${caminho}
-      onParar=${parar}
-      onCaminhaoLixo=${function() { setCaminhaoLixo(function(v) { return !v; }); }}
-      caminhaoLixo=${caminhaoLixo}
-    />
-  `;
-
+// ===== SCREENS =====
+function renderPrincipal() {
   var agora = new Date();
-  var recM = rec && rec.caminho === 'mergulhao';
-  var recR = rec && rec.caminho === 'rua_passagem';
+  var recM = S.rec && S.rec.caminho==='mergulhao';
+  var recR = S.rec && S.rec.caminho==='rua_passagem';
+  var boxM = recM ? 'box-shadow:0 0 0 2px #4a90c8,4px 4px 0 #010508' : '';
+  var boxR = recR ? 'box-shadow:0 0 0 2px #9bbc0f,4px 4px 0 #030a03' : '';
 
-  return html`
-    <div style=${{minHeight:'100vh', background:'#0f380f'}}>
-      <div className="gb-header">
-        <span style=${{fontSize:'14px', color:'#9bbc0f', letterSpacing:'3px'}}>CAMINHO</span>
-        <button
-          onClick=${function() { setTela('stats'); }}
-          style=${{
-            fontSize:'8px', cursor:'pointer',
-            background:'#1a4020', border:'2px solid #8bac0f',
-            color:'#9bbc0f', padding:'6px 10px',
-            boxShadow:'2px 2px 0 #030a03',
-          }}
-        >
-          STATS
-        </button>
-      </div>
+  var s = '<div style="min-height:100vh;background:#0f380f">'+
+    '<div class="gb-header">'+
+      '<span style="font-size:14px;color:#9bbc0f;letter-spacing:3px">CAMINHO</span>'+
+      '<button onclick="A.irStats()" style="font-size:8px;cursor:pointer;background:#1a4020;border:2px solid #8bac0f;color:#9bbc0f;padding:6px 10px;box-shadow:2px 2px 0 #030a03">STATS</button>'+
+    '</div>'+
+    '<div style="padding:12px;display:flex;flex-direction:column;gap:12px">'+
+      '<div style="text-align:center;font-size:8px;color:#306230;line-height:2;letter-spacing:1px">'+
+        DIAS_FULL[agora.getDay()].toUpperCase()+' · '+agora.getHours()+'H'+String(agora.getMinutes()).padStart(2,'0')+
+      '</div>'+
+      renderRec()+
+      '<div class="pb-surface" style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px">'+
+        '<span style="font-size:9px;color:#9bbc0f">CHUVA?</span>'+
+        '<button onclick="A.toggleChuva()" class="toggle-track '+(S.chuva?'on':'off')+'">'+
+          '<span class="toggle-thumb"></span>'+
+        '</button>'+
+      '</div>'+
+      '<button onclick="A.iniciar(\'mergulhao\')" class="btn btn-blue" style="'+boxM+'">'+
+        (recM?'★ ':'')+'START — MERGULHÃO</button>'+
+      '<button onclick="A.iniciar(\'rua_passagem\')" class="btn btn-green" style="'+boxR+'">'+
+        (recR?'★ ':'')+'START — RUA DA PASSAGEM</button>';
 
-      <div style=${{padding:'12px', display:'flex', flexDirection:'column', gap:'12px'}}>
-
-        <div style=${{textAlign:'center', fontSize:'8px', color:'#306230', lineHeight:'2', letterSpacing:'1px'}}>
-          ${DIAS_FULL[agora.getDay()].toUpperCase()} · ${agora.getHours()}H${String(agora.getMinutes()).padStart(2,'0')}
-        </div>
-
-        <${RecomendacaoCard} rec=${rec} />
-
-        <div className="pb-surface" style=${{
-          display:'flex', alignItems:'center', justifyContent:'space-between',
-          padding:'12px 14px',
-        }}>
-          <span style=${{fontSize:'9px', color:'#9bbc0f'}}>CHUVA?</span>
-          <button
-            onClick=${function() { setChuva(function(v) { return !v; }); }}
-            className=${'toggle-track ' + (chuva ? 'on' : 'off')}
-          >
-            <span className="toggle-thumb" />
-          </button>
-        </div>
-
-        <button
-          onClick=${function() { iniciar('mergulhao'); }}
-          className="btn btn-blue"
-          style=${recM ? {boxShadow:'0 0 0 2px #4a90c8, 4px 4px 0 #010508'} : {}}
-        >
-          ${recM ? '★ ' : ''}START — MERGULHÃO
-        </button>
-
-        <button
-          onClick=${function() { iniciar('rua_passagem'); }}
-          className="btn btn-green"
-          style=${recR ? {boxShadow:'0 0 0 2px #9bbc0f, 4px 4px 0 #030a03'} : {}}
-        >
-          ${recR ? '★ ' : ''}START — RUA DA PASSAGEM
-        </button>
-
-        ${ultimoSalvo ? html`
-          <div className="pb-surface fade-in" style=${{
-            padding:'10px 14px', textAlign:'center',
-            fontSize:'7px', color:'#8bac0f', lineHeight:'2.2',
-          }}>
-            SALVO: ${' '}
-            <span style=${{color:'#9bbc0f'}}>
-              ${ultimoSalvo.caminho === 'mergulhao' ? 'MERGULHÃO' : 'RUA DA PASSAGEM'}
-            </span>
-            ${' '}EM ${fmtTempo(ultimoSalvo.tempoSegundos)}
-          </div>
-        ` : null}
-
-      </div>
-    </div>
-  `;
+  if (S.ultimoSalvo) {
+    var u = S.ultimoSalvo;
+    s += '<div class="pb-surface fade-in" style="padding:10px 14px;text-align:center;font-size:7px;color:#8bac0f;line-height:2.2">'+
+      'SALVO: <span style="color:#9bbc0f">'+(u.caminho==='mergulhao'?'MERGULHÃO':'RUA DA PASSAGEM')+'</span> EM '+fmt(u.tempoSegundos)+'</div>';
+  }
+  s += '</div></div>';
+  return s;
 }
 
-ReactDOM.createRoot(document.getElementById('root')).render(html`<${App} />`);
+function renderCronometro() {
+  var isB = S.caminho==='mergulhao';
+  var nome = isB?'MERGULHÃO':'RUA DA PASSAGEM';
+  var ac = isB?'#4a90c8':'#9bbc0f';
+  var glow = isB?'#1a4a7a':'#306230';
+  var mu = isB?'#2a6090':'#306230';
+  var box = isB?'pb-blue':'pb';
+
+  var s = '<div style="min-height:100vh;background:#0f380f;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;gap:20px">'+
+    '<div class="'+box+'" style="width:100%;max-width:320px;padding:12px;text-align:center">'+
+      '<div style="font-size:7px;color:'+mu+';margin-bottom:6px;letter-spacing:2px">ROTA ATIVA</div>'+
+      '<div style="font-size:9px;color:'+ac+'">'+nome+'</div>'+
+    '</div>'+
+    '<div class="'+box+'" style="width:100%;max-width:320px;padding:28px 16px;text-align:center">'+
+      '<div id="timer-display" style="font-size:44px;color:'+ac+';letter-spacing:4px;line-height:1;text-shadow:0 0 18px '+glow+'">'+
+        fmt(S.segundos)+
+      '</div>'+
+    '</div>';
+
+  if (S.caminho==='rua_passagem') {
+    var cls = S.caminhaoLixo?'btn btn-orange':'btn btn-ghost';
+    s += '<button onclick="A.toggleCaminhao()" class="'+cls+'" style="max-width:320px;font-size:9px;padding:14px">'+
+      (S.caminhaoLixo?'■':'□')+' CAMINHÃO DE LIXO</button>';
+  }
+  s += '<button onclick="A.parar()" class="btn btn-red" style="max-width:320px">■ PARAR</button></div>';
+  return s;
+}
+
+function renderEstatisticas() {
+  var hist = obterHistorico();
+  var filtrados = hist.filter(function(t) {
+    if (S.filtroDia!=='todos' && t.diaSemana!==parseInt(S.filtroDia)) return false;
+    if (S.filtroChuva==='sim' && !t.chuva) return false;
+    if (S.filtroChuva==='nao' && t.chuva) return false;
+    return true;
+  });
+
+  var tM=filtrados.filter(function(t){return t.caminho==='mergulhao';}).map(function(t){return t.tempoSegundos;});
+  var tR=filtrados.filter(function(t){return t.caminho==='rua_passagem';}).map(function(t){return t.tempoSegundos;});
+  var mediaM=calcMedia(tM), mediaR=calcMedia(tR);
+  var maxG=Math.max(mediaM||0, mediaR||0);
+
+  function selAttr(val,cur) { return val===cur?' selected':''; }
+
+  var s = '<div style="min-height:100vh;background:#0f380f;padding-bottom:40px">'+
+    '<div class="gb-header">'+
+      '<button onclick="A.voltar()" style="font-size:8px;color:#9bbc0f;background:none;border:none;cursor:pointer;padding:0">← VOLTAR</button>'+
+      '<span style="font-size:10px;color:#9bbc0f">ESTATÍSTICAS</span>'+
+      '<span style="font-size:7px;color:#8bac0f">'+hist.length+' REG</span>'+
+    '</div>'+
+    '<div style="padding:12px;display:flex;flex-direction:column;gap:12px">';
+
+  // Filtros
+  s += '<div class="pb-surface" style="padding:12px">'+
+    '<div class="sec-title">▶ FILTROS</div>'+
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">'+
+      '<div><div style="font-size:7px;color:#306230;letter-spacing:1px">DIA</div>'+
+        '<select onchange="A.setFiltroDia(this.value)">'+
+          '<option value="todos"'+selAttr('todos',S.filtroDia)+'>TODOS</option>';
+  [1,2,3,4,5,6,0].forEach(function(d) {
+    s += '<option value="'+d+'"'+selAttr(String(d),S.filtroDia)+'>'+DIAS_FULL[d].toUpperCase()+'</option>';
+  });
+  s += '</select></div>'+
+      '<div><div style="font-size:7px;color:#306230;letter-spacing:1px">CHUVA</div>'+
+        '<select onchange="A.setFiltroChuva(this.value)">'+
+          '<option value="todos"'+selAttr('todos',S.filtroChuva)+'>TODOS</option>'+
+          '<option value="nao"'+selAttr('nao',S.filtroChuva)+'>SEM CHUVA</option>'+
+          '<option value="sim"'+selAttr('sim',S.filtroChuva)+'>COM CHUVA</option>'+
+        '</select></div>'+
+    '</div></div>';
+
+  // Média geral
+  s += '<div class="pb-surface" style="padding:12px"><div class="sec-title">▶ MÉDIA GERAL</div>';
+  if (mediaM) s += renderBarra('Mergulhão',mediaM,maxG,true,tM.length);
+  else s += '<p style="font-size:7px;color:#306230;line-height:2">SEM DADOS — MERGULHÃO</p>';
+  if (mediaR) s += renderBarra('Rua da Passagem',mediaR,maxG,false,tR.length);
+  else s += '<p style="font-size:7px;color:#306230;line-height:2">SEM DADOS — RUA</p>';
+  s += '</div>';
+
+  // Por dia da semana
+  var porDia = [];
+  [1,2,3,4,5,6,0].forEach(function(dia) {
+    var dT = filtrados.filter(function(t){return t.diaSemana===dia;});
+    if (dT.length===0) return;
+    var m = calcMedia(dT.filter(function(t){return t.caminho==='mergulhao';}).map(function(t){return t.tempoSegundos;}));
+    var r = calcMedia(dT.filter(function(t){return t.caminho==='rua_passagem';}).map(function(t){return t.tempoSegundos;}));
+    porDia.push({dia:dia,m:m,r:r});
+  });
+  if (porDia.length>0) {
+    s += '<div class="pb-surface" style="padding:12px"><div class="sec-title">▶ POR DIA DA SEMANA</div>';
+    porDia.forEach(function(item) {
+      var mx = Math.max(item.m||0, item.r||0);
+      var cntM = filtrados.filter(function(t){return t.diaSemana===item.dia&&t.caminho==='mergulhao';}).length;
+      var cntR = filtrados.filter(function(t){return t.diaSemana===item.dia&&t.caminho==='rua_passagem';}).length;
+      s += '<div style="margin-bottom:16px"><div style="font-size:7px;color:#8bac0f;letter-spacing:2px;margin-bottom:8px">['+DIAS_FULL[item.dia].toUpperCase()+']</div>';
+      if (item.m) s += renderBarra('Mergulhão',item.m,mx,true,cntM);
+      if (item.r) s += renderBarra('Rua',item.r,mx,false,cntR);
+      s += '</div>';
+    });
+    s += '</div>';
+  }
+
+  // Impacto da chuva
+  s += '<div class="pb-surface" style="padding:12px"><div class="sec-title">▶ IMPACTO DA CHUVA</div>';
+  ['mergulhao','rua_passagem'].forEach(function(c) {
+    var nome = c==='mergulhao'?'MERGULHÃO':'RUA DA PASSAGEM';
+    var semC = hist.filter(function(t){return t.caminho===c&&!t.chuva;}).map(function(t){return t.tempoSegundos;});
+    var comC = hist.filter(function(t){return t.caminho===c&&t.chuva;}).map(function(t){return t.tempoSegundos;});
+    s += '<div style="margin-bottom:16px"><div style="font-size:7px;color:#8bac0f;margin-bottom:8px;line-height:2">'+nome+'</div>'+
+      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">'+
+        '<div class="pb-surface" style="padding:8px;text-align:center;border:2px solid #306230">'+
+          '<div style="font-size:7px;color:#306230;margin-bottom:6px;line-height:2">SEM ('+semC.length+'×)</div>'+
+          '<div style="font-size:10px;color:#9bbc0f">'+(semC.length?fmt(Math.round(calcMedia(semC))):'—')+'</div>'+
+        '</div>'+
+        '<div class="pb-blue" style="padding:8px;text-align:center">'+
+          '<div style="font-size:7px;color:#2a6090;margin-bottom:6px;line-height:2">COM ('+comC.length+'×)</div>'+
+          '<div style="font-size:10px;color:#4a90c8">'+(comC.length?fmt(Math.round(calcMedia(comC))):'—')+'</div>'+
+        '</div>'+
+      '</div></div>';
+  });
+  s += '</div>';
+
+  // Caminhão de lixo
+  var rua = hist.filter(function(t){return t.caminho==='rua_passagem';});
+  if (rua.length>0) {
+    var comL = rua.filter(function(t){return t.caminhaoLixo;});
+    var semL = rua.filter(function(t){return !t.caminhaoLixo;});
+    var mCom = calcMedia(comL.map(function(t){return t.tempoSegundos;}));
+    var mSem = calcMedia(semL.map(function(t){return t.tempoSegundos;}));
+    s += '<div class="pb-surface" style="padding:12px"><div class="sec-title">▶ CAMINHÃO DE LIXO</div>'+
+      '<p style="font-size:7px;color:#8bac0f;line-height:2.2;margin-bottom:12px">ENCONTRADO '+comL.length+'/'+rua.length+' VEZES ('+Math.round(comL.length/rua.length*100)+'%)</p>'+
+      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">'+
+        '<div class="pb-surface" style="padding:8px;text-align:center;border:2px solid #306230">'+
+          '<div style="font-size:7px;color:#306230;margin-bottom:6px;line-height:2">SEM</div>'+
+          '<div style="font-size:10px;color:#9bbc0f">'+(mSem?fmt(Math.round(mSem)):'—')+'</div>'+
+        '</div>'+
+        '<div class="pb-orange" style="padding:8px;text-align:center">'+
+          '<div style="font-size:7px;color:#c87820;margin-bottom:6px;line-height:2">COM</div>'+
+          '<div style="font-size:10px;color:#e8a040">'+(mCom?fmt(Math.round(mCom)):'—')+'</div>'+
+        '</div>'+
+      '</div></div>';
+  }
+
+  // Histórico
+  s += '<div class="pb-surface" style="padding:12px"><div class="sec-title">▶ HISTÓRICO</div>';
+  if (filtrados.length===0) {
+    s += '<p style="font-size:7px;color:#306230;text-align:center;padding:16px;line-height:2">NENHUM TRAJETO REGISTRADO</p>';
+  } else {
+    filtrados.slice().reverse().forEach(function(t) {
+      var dot = t.caminho==='mergulhao'?'dot-blue':'dot-green';
+      var nome = t.caminho==='mergulhao'?'MERGULHÃO':'RUA';
+      var tags = (t.chuva?' [CHUVA]':'')+(t.caminhaoLixo?' [LIXO]':'');
+      s += '<div style="display:flex;align-items:center;gap:8px;padding:10px 0;border-bottom:1px solid #1a3a1a;font-size:7px">'+
+        '<div class="'+dot+'"></div>'+
+        '<div style="flex:1;min-width:0">'+
+          '<div style="color:#9bbc0f;line-height:2">'+nome+tags+'</div>'+
+          '<div style="color:#306230;line-height:2">'+fmtData(t.data)+'</div>'+
+        '</div>'+
+        '<div style="color:#8bac0f;font-weight:bold">'+fmt(t.tempoSegundos)+'</div>';
+      if (S.confirmDelete===t.id) {
+        s += '<div style="display:flex;gap:4px">'+
+          '<button onclick="A.execDelete('+t.id+')" style="font-size:7px;background:#280808;border:2px solid #c83030;color:#ef8080;padding:4px 6px;cursor:pointer">✓</button>'+
+          '<button onclick="A.cancelDelete()" style="font-size:7px;background:#0d220f;border:2px solid #306230;color:#9bbc0f;padding:4px 6px;cursor:pointer">✗</button>'+
+        '</div>';
+      } else {
+        s += '<button onclick="A.confirmDel('+t.id+')" style="font-size:14px;background:none;border:none;color:#306230;cursor:pointer;padding:0 4px">×</button>';
+      }
+      s += '</div>';
+    });
+  }
+  s += '</div></div></div>';
+  return s;
+}
+
+// ===== RENDER =====
+function render() {
+  var root = document.getElementById('root');
+  if (S.tela==='cronometro') root.innerHTML = renderCronometro();
+  else if (S.tela==='stats') root.innerHTML = renderEstatisticas();
+  else root.innerHTML = renderPrincipal();
+}
+
+function tickTimer() {
+  if (!startTime) return;
+  S.segundos = Math.floor((Date.now()-startTime)/1000);
+  var el = document.getElementById('timer-display');
+  if (el) el.textContent = fmt(S.segundos);
+}
+
+// ===== ACTIONS (global) =====
+window.A = {
+  iniciar: function(c) {
+    S.caminho=c; S.segundos=0; S.caminhaoLixo=false; S.tela='cronometro';
+    startTime=Date.now();
+    render();
+    timerRef=setInterval(tickTimer,500);
+  },
+  parar: function() {
+    clearInterval(timerRef);
+    var finalSeg = startTime ? Math.floor((Date.now()-startTime)/1000) : S.segundos;
+    S.ultimoSalvo = salvarTrajeto(S.caminho,finalSeg,S.chuva,S.caminhaoLixo);
+    S.tela='principal';
+    S.rec = calcRec(S.chuva);
+    startTime=null;
+    render();
+  },
+  toggleChuva: function() {
+    S.chuva=!S.chuva; S.rec=calcRec(S.chuva); render();
+  },
+  toggleCaminhao: function() {
+    S.caminhaoLixo=!S.caminhaoLixo; render();
+  },
+  irStats: function() {
+    S.tela='stats'; S.filtroDia='todos'; S.filtroChuva='todos'; S.confirmDelete=null; render();
+  },
+  voltar: function() { S.tela='principal'; render(); },
+  setFiltroDia: function(v) { S.filtroDia=v; render(); },
+  setFiltroChuva: function(v) { S.filtroChuva=v; render(); },
+  confirmDel: function(id) { S.confirmDelete=id; render(); },
+  cancelDelete: function() { S.confirmDelete=null; render(); },
+  execDelete: function(id) { deletarTrajeto(id); S.confirmDelete=null; render(); }
+};
+
+// Visibility change fix for timer
+document.addEventListener('visibilitychange', function() {
+  if (document.visibilityState==='visible' && startTime && S.tela==='cronometro') {
+    tickTimer();
+  }
+});
+
+// ===== INIT =====
+S.rec = calcRec(false);
+render();
+})();
 </script>
 </body>
 </html>
