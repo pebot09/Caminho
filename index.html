@@ -17,29 +17,15 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
   <style>
-    *, *::before, *::after {
-      font-family: 'Press Start 2P', monospace !important;
-      box-sizing: border-box;
-    }
-    body {
-      background: #0f380f;
-      color: #9bbc0f;
-      min-height: 100vh;
-      margin: 0;
-    }
+    *, *::before, *::after { font-family: 'Press Start 2P', monospace !important; box-sizing: border-box; }
+    body { background: #0f380f; color: #9bbc0f; min-height: 100vh; margin: 0; }
     .fade-in { animation: fadeIn 0.15s ease-in; }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
-
     .pb { background:#122c14; border:3px solid #9bbc0f; box-shadow:4px 4px 0 #030a03; }
     .pb-blue { background:#0a1e36; border:3px solid #4a90c8; box-shadow:4px 4px 0 #010508; }
     .pb-orange { background:#2a1200; border:3px solid #c87820; box-shadow:4px 4px 0 #0a0400; }
     .pb-surface { background:#0d220f; border:3px solid #306230; box-shadow:3px 3px 0 #030a03; }
-
-    .btn {
-      display:block; width:100%; padding:18px 12px; cursor:pointer;
-      text-transform:uppercase; text-align:center; letter-spacing:1px;
-      line-height:1.7; transition:transform 0.05s, box-shadow 0.05s;
-    }
+    .btn { display:block; width:100%; padding:18px 12px; cursor:pointer; text-transform:uppercase; text-align:center; letter-spacing:1px; line-height:1.7; transition:transform 0.05s, box-shadow 0.05s; }
     .btn:active { transform: translate(3px, 3px); }
     .btn-green { background:#1a4020; border:3px solid #9bbc0f; color:#9bbc0f; box-shadow:4px 4px 0 #030a03; font-size:11px; }
     .btn-green:active { box-shadow:1px 1px 0 #030a03; }
@@ -51,39 +37,21 @@
     .btn-orange:active { box-shadow:1px 1px 0 #0a0400; }
     .btn-ghost { background:#0d220f; border:3px solid #306230; color:#8bac0f; box-shadow:3px 3px 0 #030a03; }
     .btn-ghost:active { box-shadow:1px 1px 0 #030a03; }
-
-    .gb-header {
-      background:#08180a; border-bottom:3px solid #9bbc0f; padding:10px 14px;
-      position:sticky; top:0; z-index:10; display:flex; align-items:center; justify-content:space-between;
-    }
+    .gb-header { background:#08180a; border-bottom:3px solid #9bbc0f; padding:10px 14px; position:sticky; top:0; z-index:10; display:flex; align-items:center; justify-content:space-between; }
     .pbar-track { background:#030a03; border:2px solid #8bac0f; height:14px; overflow:hidden; }
     .pbar-green { height:100%; background:repeating-linear-gradient(90deg,#9bbc0f 0,#9bbc0f 6px,#8bac0f 6px,#8bac0f 8px); }
     .pbar-blue { height:100%; background:repeating-linear-gradient(90deg,#4a90c8 0,#4a90c8 6px,#2a6090 6px,#2a6090 8px); }
-
-    select {
-      background:#122c14 !important; color:#9bbc0f !important; border:2px solid #8bac0f !important;
-      font-size:7px !important; padding:6px 4px !important; width:100%; margin-top:4px; appearance:none;
-    }
-    .toggle-track {
-      width:52px; height:26px; position:relative; cursor:pointer; background:none;
-      border:3px solid #306230; box-shadow:3px 3px 0 #030a03; padding:0;
-    }
+    select { background:#122c14 !important; color:#9bbc0f !important; border:2px solid #8bac0f !important; font-size:7px !important; padding:6px 4px !important; width:100%; margin-top:4px; appearance:none; }
+    .toggle-track { width:52px; height:26px; position:relative; cursor:pointer; background:none; border:3px solid #306230; box-shadow:3px 3px 0 #030a03; padding:0; }
     .toggle-track.on { border-color:#4a90c8; }
     .toggle-thumb { position:absolute; top:2px; width:16px; height:16px; transition:left 0.1s; }
     .toggle-track.off .toggle-thumb { left:2px; background:#306230; }
     .toggle-track.on  .toggle-thumb { left:24px; background:#4a90c8; }
-
-    body::after {
-      content:''; position:fixed; inset:0;
-      background:repeating-linear-gradient(0deg, transparent 0, transparent 3px, rgba(0,0,0,0.07) 3px, rgba(0,0,0,0.07) 4px);
-      pointer-events:none; z-index:9999;
-    }
-    .sec-title {
-      font-size:9px; color:#9bbc0f; border-bottom:2px solid #306230;
-      padding-bottom:8px; margin-bottom:12px; letter-spacing:1px;
-    }
+    body::after { content:''; position:fixed; inset:0; background:repeating-linear-gradient(0deg, transparent 0, transparent 3px, rgba(0,0,0,0.07) 3px, rgba(0,0,0,0.07) 4px); pointer-events:none; z-index:9999; }
+    .sec-title { font-size:9px; color:#9bbc0f; border-bottom:2px solid #306230; padding-bottom:8px; margin-bottom:12px; letter-spacing:1px; }
     .dot-blue  { width:8px; height:8px; background:#4a90c8; flex-shrink:0; display:inline-block; }
     .dot-green { width:8px; height:8px; background:#9bbc0f; flex-shrink:0; display:inline-block; }
+    .sync-dot { width:10px; height:10px; border-radius:50%; display:inline-block; cursor:pointer; }
   </style>
 </head>
 <body>
@@ -93,6 +61,11 @@
 var STORAGE_KEY = 'trajetos_historico';
 var DIAS = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
 var DIAS_FULL = ['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'];
+
+var GH_OWNER = 'pebot09';
+var GH_REPO = 'Caminho';
+var GH_FILE = 'data/trajetos.json';
+var GH_TOKEN_KEY = 'caminho_gh_token';
 
 // ===== DATA =====
 function obterHistorico() {
@@ -143,357 +116,255 @@ function filtrarCtx(hist,hora,dia,chuva,janela) {
   });
 }
 function calcRec(chuva) {
-  var agora = new Date(), hora = agora.getHours(), dia = agora.getDay(), hist = obterHistorico();
-  var ctx = filtrarCtx(hist,hora,dia,chuva,1);
-  if (ctx.length<6) ctx = filtrarCtx(hist,hora,dia,chuva,2);
-  if (ctx.length<4) ctx = hist.filter(function(t){
-    return t.diaSemana===dia && t.hora>=Math.max(0,hora-2) && t.hora<=Math.min(23,hora+2);
-  });
+  var agora=new Date(),hora=agora.getHours(),dia=agora.getDay(),hist=obterHistorico();
+  var ctx=filtrarCtx(hist,hora,dia,chuva,1);
+  if(ctx.length<6) ctx=filtrarCtx(hist,hora,dia,chuva,2);
+  if(ctx.length<4) ctx=hist.filter(function(t){ return t.diaSemana===dia&&t.hora>=Math.max(0,hora-2)&&t.hora<=Math.min(23,hora+2); });
   var tM=ctx.filter(function(t){return t.caminho==='mergulhao';}).map(function(t){return t.tempoSegundos;});
   var tR=ctx.filter(function(t){return t.caminho==='rua_passagem';}).map(function(t){return t.tempoSegundos;});
-  var MIN=3;
-  if(tM.length<MIN && tR.length<MIN) return {tipo:'sem_dados',contM:tM.length,contR:tR.length};
-  if(tM.length<MIN) return {tipo:'teste',caminho:'mergulhao',caminhoNome:'Mergulhão'};
-  if(tR.length<MIN) return {tipo:'teste',caminho:'rua_passagem',caminhoNome:'Rua da Passagem'};
+  if(tM.length<3&&tR.length<3) return {tipo:'sem_dados',contM:tM.length,contR:tR.length};
+  if(tM.length<3) return {tipo:'teste',caminho:'mergulhao',caminhoNome:'Mergulhão'};
+  if(tR.length<3) return {tipo:'teste',caminho:'rua_passagem',caminhoNome:'Rua da Passagem'};
   var medM=calcMediana(tM),medR=calcMediana(tR),devM=calcDesvio(tM),devR=calcDesvio(tR);
-  var prob=calcProb(tM,tR); if(prob===null) prob=0.5;
-  var diff=Math.abs(medR-medM), proximo=diff<=30&&prob>=0.4&&prob<=0.6;
-  var cam=prob>=0.5?'mergulhao':'rua_passagem', nome=prob>=0.5?'Mergulhão':'Rua da Passagem';
-  var medE=cam==='mergulhao'?medM:medR, devE=cam==='mergulhao'?devM:devR;
-  return {
-    tipo:proximo?'proximo':'claro', caminho:cam, caminhoNome:nome,
-    estimadoMin:Math.floor(Math.max(medE-devE,60)/60), estimadoMax:Math.ceil((medE+devE)/60),
-    probabilidade:Math.round(Math.max(prob,1-prob)*100), medM:medM, medR:medR
-  };
+  var prob=calcProb(tM,tR); if(prob===null)prob=0.5;
+  var diff=Math.abs(medR-medM),proximo=diff<=30&&prob>=0.4&&prob<=0.6;
+  var cam=prob>=0.5?'mergulhao':'rua_passagem',nome=prob>=0.5?'Mergulhão':'Rua da Passagem';
+  var medE=cam==='mergulhao'?medM:medR,devE=cam==='mergulhao'?devM:devR;
+  return {tipo:proximo?'proximo':'claro',caminho:cam,caminhoNome:nome,
+    estimadoMin:Math.floor(Math.max(medE-devE,60)/60),estimadoMax:Math.ceil((medE+devE)/60),
+    probabilidade:Math.round(Math.max(prob,1-prob)*100),medM:medM,medR:medR};
 }
 
 // ===== UTILS =====
-function fmt(seg) { var m=Math.floor(seg/60),s=seg%60; return m+':'+String(s).padStart(2,'0'); }
-function fmtData(iso) {
-  var d=new Date(iso);
-  return DIAS[d.getDay()]+' '+String(d.getDate()).padStart(2,'0')+'/'+String(d.getMonth()+1).padStart(2,'0')+' '+d.getHours()+':'+String(d.getMinutes()).padStart(2,'0');
+function fmt(seg){var m=Math.floor(seg/60),s=seg%60;return m+':'+String(s).padStart(2,'0');}
+function fmtData(iso){var d=new Date(iso);return DIAS[d.getDay()]+' '+String(d.getDate()).padStart(2,'0')+'/'+String(d.getMonth()+1).padStart(2,'0')+' '+d.getHours()+':'+String(d.getMinutes()).padStart(2,'0');}
+function esc(s){var d=document.createElement('div');d.textContent=s;return d.innerHTML;}
+
+// ===== GITHUB SYNC =====
+function getToken(){return localStorage.getItem(GH_TOKEN_KEY)||'';}
+function saveGhToken(t){localStorage.setItem(GH_TOKEN_KEY,t.trim());}
+
+function ghFetch(method,bodyObj){
+  var opts={method:method,headers:{'Accept':'application/vnd.github.v3+json'}};
+  var tok=getToken();
+  if(tok) opts.headers['Authorization']='Bearer '+tok;
+  if(bodyObj){opts.headers['Content-Type']='application/json';opts.body=JSON.stringify(bodyObj);}
+  return fetch('https://api.github.com/repos/'+GH_OWNER+'/'+GH_REPO+'/contents/'+GH_FILE,opts);
 }
-function esc(s) { var d=document.createElement('div'); d.textContent=s; return d.innerHTML; }
+
+function ghRead(){
+  return ghFetch('GET').then(function(r){
+    if(r.status===404) return {data:[],sha:null};
+    if(!r.ok) throw new Error('read:'+r.status);
+    return r.json().then(function(j){
+      var raw=atob(j.content.replace(/\s/g,''));
+      return {data:JSON.parse(decodeURIComponent(escape(raw))),sha:j.sha};
+    });
+  });
+}
+
+function ghWrite(data,sha){
+  var json=JSON.stringify(data,null,2);
+  var b64=btoa(unescape(encodeURIComponent(json)));
+  var body={message:'sync trajetos',content:b64};
+  if(sha) body.sha=sha;
+  return ghFetch('PUT',body).then(function(r){
+    if(!r.ok) throw new Error('write:'+r.status);
+    return r.json();
+  });
+}
+
+function doSync(callback){
+  if(!getToken()){syncStatus=null;return;}
+  syncStatus='syncing';
+  updateSyncDot();
+  var local=obterHistorico();
+  ghRead().then(function(remote){
+    var data;
+    if(local.length===0 && remote.data.length>0){
+      data=remote.data;
+      localStorage.setItem(STORAGE_KEY,JSON.stringify(data));
+      S.rec=calcRec(S.chuva);
+    } else {
+      data=local;
+    }
+    return ghWrite(data,remote.sha);
+  }).then(function(){
+    syncStatus='ok';
+    if(callback) callback();
+    else updateSyncDot();
+  }).catch(function(err){
+    syncStatus='error';
+    if(callback) callback();
+    else updateSyncDot();
+  });
+}
+
+function updateSyncDot(){
+  var el=document.getElementById('sync-dot');
+  if(!el) return;
+  if(syncStatus==='syncing') el.style.background='#4a90c8';
+  else if(syncStatus==='ok') el.style.background='#9bbc0f';
+  else if(syncStatus==='error') el.style.background='#c83030';
+  else el.style.background='#306230';
+}
+
+function syncDotColor(){
+  if(syncStatus==='syncing') return '#4a90c8';
+  if(syncStatus==='ok') return '#9bbc0f';
+  if(syncStatus==='error') return '#c83030';
+  return '#306230';
+}
 
 // ===== STATE =====
-var S = {
-  tela:'principal', chuva:false, caminho:null, segundos:0,
-  caminhaoLixo:false, rec:null, ultimoSalvo:null,
-  filtroDia:'todos', filtroChuva:'todos', confirmDelete:null
-};
-var timerRef=null, startTime=null;
+var S={tela:'principal',chuva:false,caminho:null,segundos:0,caminhaoLixo:false,rec:null,ultimoSalvo:null,filtroDia:'todos',filtroChuva:'todos',confirmDelete:null};
+var timerRef=null,startTime=null,syncStatus=null;
 
 // ===== RENDER HELPERS =====
-function renderBarra(label,valor,maximo,isBlue,count) {
-  var pct = maximo>0 ? Math.round((valor/maximo)*100) : 0;
-  return '<div style="margin-bottom:16px">'+
-    '<div style="display:flex;justify-content:space-between;font-size:7px;margin-bottom:6px;line-height:2">'+
-      '<span style="color:#9bbc0f">'+esc(label.toUpperCase())+'</span>'+
-      '<span style="color:#8bac0f">'+fmt(Math.round(valor))+' ('+count+'×)</span>'+
-    '</div>'+
-    '<div class="pbar-track"><div class="'+(isBlue?'pbar-blue':'pbar-green')+'" style="width:'+pct+'%"></div></div>'+
-  '</div>';
+function renderBarra(label,valor,maximo,isBlue,count){
+  var pct=maximo>0?Math.round((valor/maximo)*100):0;
+  return '<div style="margin-bottom:16px"><div style="display:flex;justify-content:space-between;font-size:7px;margin-bottom:6px;line-height:2"><span style="color:#9bbc0f">'+esc(label.toUpperCase())+'</span><span style="color:#8bac0f">'+fmt(Math.round(valor))+' ('+count+'×)</span></div><div class="pbar-track"><div class="'+(isBlue?'pbar-blue':'pbar-green')+'" style="width:'+pct+'%"></div></div></div>';
 }
-
-function renderRec() {
-  var r = S.rec;
-  if (!r) return '';
-  if (r.tipo==='sem_dados') return '<div class="pb-surface fade-in" style="padding:16px;margin-bottom:12px;text-align:center">'+
-    '<div style="font-size:8px;color:#306230;margin-bottom:10px;letter-spacing:2px">[ ANÁLISE ]</div>'+
-    '<p style="font-size:8px;color:#9bbc0f;margin-bottom:10px;line-height:2">DADOS INSUFICIENTES</p>'+
-    '<p style="font-size:7px;color:#8bac0f;line-height:2.2">Registre mais trajetos.<br>MERG: '+r.contM+' · RUA: '+r.contR+'</p></div>';
-  if (r.tipo==='teste') return '<div class="pb-orange fade-in" style="padding:16px;margin-bottom:12px;text-align:center">'+
-    '<div style="font-size:7px;color:#c87820;margin-bottom:8px;letter-spacing:2px">[ SUGESTÃO ]</div>'+
-    '<div style="font-size:9px;color:#e8a040;line-height:2">TESTE O<br>'+esc(r.caminhoNome.toUpperCase())+'</div></div>';
-
-  var isB = r.caminho==='mergulhao';
-  var ac = isB?'#4a90c8':'#9bbc0f', mu = isB?'#2a6090':'#306230';
-  var box = isB?'pb-blue':'pb';
-  var lbl = r.tipo==='claro'?'[ RECOMENDADO ]':'[ QUASE IGUAL ]';
-  var bg = isB?'#0a1e36':'#122c14';
-  var s = '<div class="'+box+' fade-in" style="padding:16px;margin-bottom:12px">'+
-    '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">'+
-      '<span style="font-size:7px;color:'+mu+';letter-spacing:1px">'+lbl+'</span>'+
-      '<span style="font-size:7px;padding:3px 8px;background:'+bg+';border:2px solid '+ac+';color:'+ac+'">'+r.probabilidade+'%</span>'+
-    '</div>'+
-    '<div style="font-size:13px;color:'+ac+';margin-bottom:8px;line-height:1.5">▶ '+esc(r.caminhoNome.toUpperCase())+'</div>'+
-    '<div style="font-size:8px;color:'+mu+';line-height:2">EST: <span style="color:'+ac+'">'+r.estimadoMin+'–'+r.estimadoMax+' MIN</span></div>';
-  if (r.medM && r.medR) s += '<div style="font-size:7px;color:'+mu+';margin-top:8px;line-height:2">MERG '+fmt(Math.round(r.medM))+' · RUA '+fmt(Math.round(r.medR))+'</div>';
-  s += '</div>';
-  return s;
+function renderRec(){
+  var r=S.rec; if(!r) return '';
+  if(r.tipo==='sem_dados') return '<div class="pb-surface fade-in" style="padding:16px;margin-bottom:12px;text-align:center"><div style="font-size:8px;color:#306230;margin-bottom:10px;letter-spacing:2px">[ ANÁLISE ]</div><p style="font-size:8px;color:#9bbc0f;margin-bottom:10px;line-height:2">DADOS INSUFICIENTES</p><p style="font-size:7px;color:#8bac0f;line-height:2.2">Registre mais trajetos.<br>MERG: '+r.contM+' · RUA: '+r.contR+'</p></div>';
+  if(r.tipo==='teste') return '<div class="pb-orange fade-in" style="padding:16px;margin-bottom:12px;text-align:center"><div style="font-size:7px;color:#c87820;margin-bottom:8px;letter-spacing:2px">[ SUGESTÃO ]</div><div style="font-size:9px;color:#e8a040;line-height:2">TESTE O<br>'+esc(r.caminhoNome.toUpperCase())+'</div></div>';
+  var isB=r.caminho==='mergulhao',ac=isB?'#4a90c8':'#9bbc0f',mu=isB?'#2a6090':'#306230',box=isB?'pb-blue':'pb',bg=isB?'#0a1e36':'#122c14';
+  var s='<div class="'+box+' fade-in" style="padding:16px;margin-bottom:12px"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px"><span style="font-size:7px;color:'+mu+';letter-spacing:1px">'+(r.tipo==='claro'?'[ RECOMENDADO ]':'[ QUASE IGUAL ]')+'</span><span style="font-size:7px;padding:3px 8px;background:'+bg+';border:2px solid '+ac+';color:'+ac+'">'+r.probabilidade+'%</span></div><div style="font-size:13px;color:'+ac+';margin-bottom:8px;line-height:1.5">▶ '+esc(r.caminhoNome.toUpperCase())+'</div><div style="font-size:8px;color:'+mu+';line-height:2">EST: <span style="color:'+ac+'">'+r.estimadoMin+'–'+r.estimadoMax+' MIN</span></div>';
+  if(r.medM&&r.medR) s+='<div style="font-size:7px;color:'+mu+';margin-top:8px;line-height:2">MERG '+fmt(Math.round(r.medM))+' · RUA '+fmt(Math.round(r.medR))+'</div>';
+  return s+'</div>';
 }
 
 // ===== SCREENS =====
-function renderPrincipal() {
-  var agora = new Date();
-  var recM = S.rec && S.rec.caminho==='mergulhao';
-  var recR = S.rec && S.rec.caminho==='rua_passagem';
-  var boxM = recM ? 'box-shadow:0 0 0 2px #4a90c8,4px 4px 0 #010508' : '';
-  var boxR = recR ? 'box-shadow:0 0 0 2px #9bbc0f,4px 4px 0 #030a03' : '';
-
-  var s = '<div style="min-height:100vh;background:#0f380f">'+
-    '<div class="gb-header">'+
-      '<span style="font-size:14px;color:#9bbc0f;letter-spacing:3px">CAMINHO</span>'+
-      '<button onclick="A.irStats()" style="font-size:8px;cursor:pointer;background:#1a4020;border:2px solid #8bac0f;color:#9bbc0f;padding:6px 10px;box-shadow:2px 2px 0 #030a03">STATS</button>'+
-    '</div>'+
-    '<div style="padding:12px;display:flex;flex-direction:column;gap:12px">'+
-      '<div style="text-align:center;font-size:8px;color:#306230;line-height:2;letter-spacing:1px">'+
-        DIAS_FULL[agora.getDay()].toUpperCase()+' · '+agora.getHours()+'H'+String(agora.getMinutes()).padStart(2,'0')+
-      '</div>'+
-      renderRec()+
-      '<div class="pb-surface" style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px">'+
-        '<span style="font-size:9px;color:#9bbc0f">CHUVA?</span>'+
-        '<button onclick="A.toggleChuva()" class="toggle-track '+(S.chuva?'on':'off')+'">'+
-          '<span class="toggle-thumb"></span>'+
-        '</button>'+
-      '</div>'+
-      '<button onclick="A.iniciar(\'mergulhao\')" class="btn btn-blue" style="'+boxM+'">'+
-        (recM?'★ ':'')+'START — MERGULHÃO</button>'+
-      '<button onclick="A.iniciar(\'rua_passagem\')" class="btn btn-green" style="'+boxR+'">'+
-        (recR?'★ ':'')+'START — RUA DA PASSAGEM</button>';
-
-  if (S.ultimoSalvo) {
-    var u = S.ultimoSalvo;
-    s += '<div class="pb-surface fade-in" style="padding:10px 14px;text-align:center;font-size:7px;color:#8bac0f;line-height:2.2">'+
-      'SALVO: <span style="color:#9bbc0f">'+(u.caminho==='mergulhao'?'MERGULHÃO':'RUA DA PASSAGEM')+'</span> EM '+fmt(u.tempoSegundos)+'</div>';
-  }
-  s += '</div></div>';
-  return s;
+function renderPrincipal(){
+  var agora=new Date(),recM=S.rec&&S.rec.caminho==='mergulhao',recR=S.rec&&S.rec.caminho==='rua_passagem';
+  var boxM=recM?'box-shadow:0 0 0 2px #4a90c8,4px 4px 0 #010508':'',boxR=recR?'box-shadow:0 0 0 2px #9bbc0f,4px 4px 0 #030a03':'';
+  var s='<div style="min-height:100vh;background:#0f380f"><div class="gb-header"><span style="font-size:14px;color:#9bbc0f;letter-spacing:3px">CAMINHO</span><div style="display:flex;gap:10px;align-items:center"><span id="sync-dot" class="sync-dot" style="background:'+syncDotColor()+'" onclick="A.irConfig()"></span><button onclick="A.irStats()" style="font-size:8px;cursor:pointer;background:#1a4020;border:2px solid #8bac0f;color:#9bbc0f;padding:6px 10px;box-shadow:2px 2px 0 #030a03">STATS</button></div></div><div style="padding:12px;display:flex;flex-direction:column;gap:12px"><div style="text-align:center;font-size:8px;color:#306230;line-height:2;letter-spacing:1px">'+DIAS_FULL[agora.getDay()].toUpperCase()+' · '+agora.getHours()+'H'+String(agora.getMinutes()).padStart(2,'0')+'</div>'+renderRec()+'<div class="pb-surface" style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px"><span style="font-size:9px;color:#9bbc0f">CHUVA?</span><button onclick="A.toggleChuva()" class="toggle-track '+(S.chuva?'on':'off')+'"><span class="toggle-thumb"></span></button></div><button onclick="A.iniciar(\'mergulhao\')" class="btn btn-blue" style="'+boxM+'">'+(recM?'★ ':'')+'START — MERGULHÃO</button><button onclick="A.iniciar(\'rua_passagem\')" class="btn btn-green" style="'+boxR+'">'+(recR?'★ ':'')+'START — RUA DA PASSAGEM</button>';
+  if(S.ultimoSalvo){var u=S.ultimoSalvo;s+='<div class="pb-surface fade-in" style="padding:10px 14px;text-align:center;font-size:7px;color:#8bac0f;line-height:2.2">SALVO: <span style="color:#9bbc0f">'+(u.caminho==='mergulhao'?'MERGULHÃO':'RUA DA PASSAGEM')+'</span> EM '+fmt(u.tempoSegundos)+'</div>';}
+  return s+'</div></div>';
 }
 
-function renderCronometro() {
-  var isB = S.caminho==='mergulhao';
-  var nome = isB?'MERGULHÃO':'RUA DA PASSAGEM';
-  var ac = isB?'#4a90c8':'#9bbc0f';
-  var glow = isB?'#1a4a7a':'#306230';
-  var mu = isB?'#2a6090':'#306230';
-  var box = isB?'pb-blue':'pb';
-
-  var s = '<div style="min-height:100vh;background:#0f380f;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;gap:20px">'+
-    '<div class="'+box+'" style="width:100%;max-width:320px;padding:12px;text-align:center">'+
-      '<div style="font-size:7px;color:'+mu+';margin-bottom:6px;letter-spacing:2px">ROTA ATIVA</div>'+
-      '<div style="font-size:9px;color:'+ac+'">'+nome+'</div>'+
-    '</div>'+
-    '<div class="'+box+'" style="width:100%;max-width:320px;padding:28px 16px;text-align:center">'+
-      '<div id="timer-display" style="font-size:44px;color:'+ac+';letter-spacing:4px;line-height:1;text-shadow:0 0 18px '+glow+'">'+
-        fmt(S.segundos)+
-      '</div>'+
-    '</div>';
-
-  if (S.caminho==='rua_passagem') {
-    var cls = S.caminhaoLixo?'btn btn-orange':'btn btn-ghost';
-    s += '<button onclick="A.toggleCaminhao()" class="'+cls+'" style="max-width:320px;font-size:9px;padding:14px">'+
-      (S.caminhaoLixo?'■':'□')+' CAMINHÃO DE LIXO</button>';
-  }
-  s += '<button onclick="A.parar()" class="btn btn-red" style="max-width:320px">■ PARAR</button></div>';
-  return s;
+function renderCronometro(){
+  var isB=S.caminho==='mergulhao',nome=isB?'MERGULHÃO':'RUA DA PASSAGEM',ac=isB?'#4a90c8':'#9bbc0f',glow=isB?'#1a4a7a':'#306230',mu=isB?'#2a6090':'#306230',box=isB?'pb-blue':'pb';
+  var s='<div style="min-height:100vh;background:#0f380f;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;gap:20px"><div class="'+box+'" style="width:100%;max-width:320px;padding:12px;text-align:center"><div style="font-size:7px;color:'+mu+';margin-bottom:6px;letter-spacing:2px">ROTA ATIVA</div><div style="font-size:9px;color:'+ac+'">'+nome+'</div></div><div class="'+box+'" style="width:100%;max-width:320px;padding:28px 16px;text-align:center"><div id="timer-display" style="font-size:44px;color:'+ac+';letter-spacing:4px;line-height:1;text-shadow:0 0 18px '+glow+'">'+fmt(S.segundos)+'</div></div>';
+  if(S.caminho==='rua_passagem') s+='<button onclick="A.toggleCaminhao()" class="btn '+(S.caminhaoLixo?'btn-orange':'btn-ghost')+'" style="max-width:320px;font-size:9px;padding:14px">'+(S.caminhaoLixo?'■':'□')+' CAMINHÃO DE LIXO</button>';
+  return s+'<button onclick="A.parar()" class="btn btn-red" style="max-width:320px">■ PARAR</button></div>';
 }
 
-function renderEstatisticas() {
-  var hist = obterHistorico();
-  var filtrados = hist.filter(function(t) {
-    if (S.filtroDia!=='todos' && t.diaSemana!==parseInt(S.filtroDia)) return false;
-    if (S.filtroChuva==='sim' && !t.chuva) return false;
-    if (S.filtroChuva==='nao' && t.chuva) return false;
+function renderEstatisticas(){
+  var hist=obterHistorico();
+  var filtrados=hist.filter(function(t){
+    if(S.filtroDia!=='todos'&&t.diaSemana!==parseInt(S.filtroDia)) return false;
+    if(S.filtroChuva==='sim'&&!t.chuva) return false;
+    if(S.filtroChuva==='nao'&&t.chuva) return false;
     return true;
   });
-
   var tM=filtrados.filter(function(t){return t.caminho==='mergulhao';}).map(function(t){return t.tempoSegundos;});
   var tR=filtrados.filter(function(t){return t.caminho==='rua_passagem';}).map(function(t){return t.tempoSegundos;});
-  var mediaM=calcMedia(tM), mediaR=calcMedia(tR);
-  var maxG=Math.max(mediaM||0, mediaR||0);
+  var mediaM=calcMedia(tM),mediaR=calcMedia(tR),maxG=Math.max(mediaM||0,mediaR||0);
+  function sel(v,c){return v===c?' selected':'';}
 
-  function selAttr(val,cur) { return val===cur?' selected':''; }
+  var s='<div style="min-height:100vh;background:#0f380f;padding-bottom:40px"><div class="gb-header"><button onclick="A.voltar()" style="font-size:8px;color:#9bbc0f;background:none;border:none;cursor:pointer;padding:0">← VOLTAR</button><span style="font-size:10px;color:#9bbc0f">ESTATÍSTICAS</span><span style="font-size:7px;color:#8bac0f">'+hist.length+' REG</span></div><div style="padding:12px;display:flex;flex-direction:column;gap:12px">';
 
-  var s = '<div style="min-height:100vh;background:#0f380f;padding-bottom:40px">'+
-    '<div class="gb-header">'+
-      '<button onclick="A.voltar()" style="font-size:8px;color:#9bbc0f;background:none;border:none;cursor:pointer;padding:0">← VOLTAR</button>'+
-      '<span style="font-size:10px;color:#9bbc0f">ESTATÍSTICAS</span>'+
-      '<span style="font-size:7px;color:#8bac0f">'+hist.length+' REG</span>'+
-    '</div>'+
-    '<div style="padding:12px;display:flex;flex-direction:column;gap:12px">';
+  s+='<div class="pb-surface" style="padding:12px"><div class="sec-title">▶ FILTROS</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:12px"><div><div style="font-size:7px;color:#306230;letter-spacing:1px">DIA</div><select onchange="A.setFiltroDia(this.value)"><option value="todos"'+sel('todos',S.filtroDia)+'>TODOS</option>';
+  [1,2,3,4,5,6,0].forEach(function(d){s+='<option value="'+d+'"'+sel(String(d),S.filtroDia)+'>'+DIAS_FULL[d].toUpperCase()+'</option>';});
+  s+='</select></div><div><div style="font-size:7px;color:#306230;letter-spacing:1px">CHUVA</div><select onchange="A.setFiltroChuva(this.value)"><option value="todos"'+sel('todos',S.filtroChuva)+'>TODOS</option><option value="nao"'+sel('nao',S.filtroChuva)+'>SEM CHUVA</option><option value="sim"'+sel('sim',S.filtroChuva)+'>COM CHUVA</option></select></div></div></div>';
 
-  // Filtros
-  s += '<div class="pb-surface" style="padding:12px">'+
-    '<div class="sec-title">▶ FILTROS</div>'+
-    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">'+
-      '<div><div style="font-size:7px;color:#306230;letter-spacing:1px">DIA</div>'+
-        '<select onchange="A.setFiltroDia(this.value)">'+
-          '<option value="todos"'+selAttr('todos',S.filtroDia)+'>TODOS</option>';
-  [1,2,3,4,5,6,0].forEach(function(d) {
-    s += '<option value="'+d+'"'+selAttr(String(d),S.filtroDia)+'>'+DIAS_FULL[d].toUpperCase()+'</option>';
-  });
-  s += '</select></div>'+
-      '<div><div style="font-size:7px;color:#306230;letter-spacing:1px">CHUVA</div>'+
-        '<select onchange="A.setFiltroChuva(this.value)">'+
-          '<option value="todos"'+selAttr('todos',S.filtroChuva)+'>TODOS</option>'+
-          '<option value="nao"'+selAttr('nao',S.filtroChuva)+'>SEM CHUVA</option>'+
-          '<option value="sim"'+selAttr('sim',S.filtroChuva)+'>COM CHUVA</option>'+
-        '</select></div>'+
-    '</div></div>';
+  s+='<div class="pb-surface" style="padding:12px"><div class="sec-title">▶ MÉDIA GERAL</div>';
+  s+=mediaM?renderBarra('Mergulhão',mediaM,maxG,true,tM.length):'<p style="font-size:7px;color:#306230;line-height:2">SEM DADOS — MERGULHÃO</p>';
+  s+=mediaR?renderBarra('Rua da Passagem',mediaR,maxG,false,tR.length):'<p style="font-size:7px;color:#306230;line-height:2">SEM DADOS — RUA</p>';
+  s+='</div>';
 
-  // Média geral
-  s += '<div class="pb-surface" style="padding:12px"><div class="sec-title">▶ MÉDIA GERAL</div>';
-  if (mediaM) s += renderBarra('Mergulhão',mediaM,maxG,true,tM.length);
-  else s += '<p style="font-size:7px;color:#306230;line-height:2">SEM DADOS — MERGULHÃO</p>';
-  if (mediaR) s += renderBarra('Rua da Passagem',mediaR,maxG,false,tR.length);
-  else s += '<p style="font-size:7px;color:#306230;line-height:2">SEM DADOS — RUA</p>';
-  s += '</div>';
+  var porDia=[];
+  [1,2,3,4,5,6,0].forEach(function(dia){var dT=filtrados.filter(function(t){return t.diaSemana===dia;});if(!dT.length)return;porDia.push({dia:dia,m:calcMedia(dT.filter(function(t){return t.caminho==='mergulhao';}).map(function(t){return t.tempoSegundos;})),r:calcMedia(dT.filter(function(t){return t.caminho==='rua_passagem';}).map(function(t){return t.tempoSegundos;}))});});
+  if(porDia.length>0){s+='<div class="pb-surface" style="padding:12px"><div class="sec-title">▶ POR DIA DA SEMANA</div>';porDia.forEach(function(item){var mx=Math.max(item.m||0,item.r||0);var cM=filtrados.filter(function(t){return t.diaSemana===item.dia&&t.caminho==='mergulhao';}).length;var cR=filtrados.filter(function(t){return t.diaSemana===item.dia&&t.caminho==='rua_passagem';}).length;s+='<div style="margin-bottom:16px"><div style="font-size:7px;color:#8bac0f;letter-spacing:2px;margin-bottom:8px">['+DIAS_FULL[item.dia].toUpperCase()+']</div>';if(item.m)s+=renderBarra('Mergulhão',item.m,mx,true,cM);if(item.r)s+=renderBarra('Rua',item.r,mx,false,cR);s+='</div>';});s+='</div>';}
 
-  // Por dia da semana
-  var porDia = [];
-  [1,2,3,4,5,6,0].forEach(function(dia) {
-    var dT = filtrados.filter(function(t){return t.diaSemana===dia;});
-    if (dT.length===0) return;
-    var m = calcMedia(dT.filter(function(t){return t.caminho==='mergulhao';}).map(function(t){return t.tempoSegundos;}));
-    var r = calcMedia(dT.filter(function(t){return t.caminho==='rua_passagem';}).map(function(t){return t.tempoSegundos;}));
-    porDia.push({dia:dia,m:m,r:r});
-  });
-  if (porDia.length>0) {
-    s += '<div class="pb-surface" style="padding:12px"><div class="sec-title">▶ POR DIA DA SEMANA</div>';
-    porDia.forEach(function(item) {
-      var mx = Math.max(item.m||0, item.r||0);
-      var cntM = filtrados.filter(function(t){return t.diaSemana===item.dia&&t.caminho==='mergulhao';}).length;
-      var cntR = filtrados.filter(function(t){return t.diaSemana===item.dia&&t.caminho==='rua_passagem';}).length;
-      s += '<div style="margin-bottom:16px"><div style="font-size:7px;color:#8bac0f;letter-spacing:2px;margin-bottom:8px">['+DIAS_FULL[item.dia].toUpperCase()+']</div>';
-      if (item.m) s += renderBarra('Mergulhão',item.m,mx,true,cntM);
-      if (item.r) s += renderBarra('Rua',item.r,mx,false,cntR);
-      s += '</div>';
-    });
-    s += '</div>';
-  }
+  s+='<div class="pb-surface" style="padding:12px"><div class="sec-title">▶ IMPACTO DA CHUVA</div>';
+  ['mergulhao','rua_passagem'].forEach(function(c){var nm=c==='mergulhao'?'MERGULHÃO':'RUA DA PASSAGEM';var semC=hist.filter(function(t){return t.caminho===c&&!t.chuva;}).map(function(t){return t.tempoSegundos;});var comC=hist.filter(function(t){return t.caminho===c&&t.chuva;}).map(function(t){return t.tempoSegundos;});s+='<div style="margin-bottom:16px"><div style="font-size:7px;color:#8bac0f;margin-bottom:8px;line-height:2">'+nm+'</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px"><div class="pb-surface" style="padding:8px;text-align:center;border:2px solid #306230"><div style="font-size:7px;color:#306230;margin-bottom:6px;line-height:2">SEM ('+semC.length+'×)</div><div style="font-size:10px;color:#9bbc0f">'+(semC.length?fmt(Math.round(calcMedia(semC))):'—')+'</div></div><div class="pb-blue" style="padding:8px;text-align:center"><div style="font-size:7px;color:#2a6090;margin-bottom:6px;line-height:2">COM ('+comC.length+'×)</div><div style="font-size:10px;color:#4a90c8">'+(comC.length?fmt(Math.round(calcMedia(comC))):'—')+'</div></div></div></div>';});
+  s+='</div>';
 
-  // Impacto da chuva
-  s += '<div class="pb-surface" style="padding:12px"><div class="sec-title">▶ IMPACTO DA CHUVA</div>';
-  ['mergulhao','rua_passagem'].forEach(function(c) {
-    var nome = c==='mergulhao'?'MERGULHÃO':'RUA DA PASSAGEM';
-    var semC = hist.filter(function(t){return t.caminho===c&&!t.chuva;}).map(function(t){return t.tempoSegundos;});
-    var comC = hist.filter(function(t){return t.caminho===c&&t.chuva;}).map(function(t){return t.tempoSegundos;});
-    s += '<div style="margin-bottom:16px"><div style="font-size:7px;color:#8bac0f;margin-bottom:8px;line-height:2">'+nome+'</div>'+
-      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">'+
-        '<div class="pb-surface" style="padding:8px;text-align:center;border:2px solid #306230">'+
-          '<div style="font-size:7px;color:#306230;margin-bottom:6px;line-height:2">SEM ('+semC.length+'×)</div>'+
-          '<div style="font-size:10px;color:#9bbc0f">'+(semC.length?fmt(Math.round(calcMedia(semC))):'—')+'</div>'+
-        '</div>'+
-        '<div class="pb-blue" style="padding:8px;text-align:center">'+
-          '<div style="font-size:7px;color:#2a6090;margin-bottom:6px;line-height:2">COM ('+comC.length+'×)</div>'+
-          '<div style="font-size:10px;color:#4a90c8">'+(comC.length?fmt(Math.round(calcMedia(comC))):'—')+'</div>'+
-        '</div>'+
-      '</div></div>';
-  });
-  s += '</div>';
+  var rua=hist.filter(function(t){return t.caminho==='rua_passagem';});
+  if(rua.length>0){var comL=rua.filter(function(t){return t.caminhaoLixo;}),semL=rua.filter(function(t){return !t.caminhaoLixo;});var mCom=calcMedia(comL.map(function(t){return t.tempoSegundos;})),mSem=calcMedia(semL.map(function(t){return t.tempoSegundos;}));s+='<div class="pb-surface" style="padding:12px"><div class="sec-title">▶ CAMINHÃO DE LIXO</div><p style="font-size:7px;color:#8bac0f;line-height:2.2;margin-bottom:12px">ENCONTRADO '+comL.length+'/'+rua.length+' VEZES ('+Math.round(comL.length/rua.length*100)+'%)</p><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px"><div class="pb-surface" style="padding:8px;text-align:center;border:2px solid #306230"><div style="font-size:7px;color:#306230;margin-bottom:6px;line-height:2">SEM</div><div style="font-size:10px;color:#9bbc0f">'+(mSem?fmt(Math.round(mSem)):'—')+'</div></div><div class="pb-orange" style="padding:8px;text-align:center"><div style="font-size:7px;color:#c87820;margin-bottom:6px;line-height:2">COM</div><div style="font-size:10px;color:#e8a040">'+(mCom?fmt(Math.round(mCom)):'—')+'</div></div></div></div>';}
 
-  // Caminhão de lixo
-  var rua = hist.filter(function(t){return t.caminho==='rua_passagem';});
-  if (rua.length>0) {
-    var comL = rua.filter(function(t){return t.caminhaoLixo;});
-    var semL = rua.filter(function(t){return !t.caminhaoLixo;});
-    var mCom = calcMedia(comL.map(function(t){return t.tempoSegundos;}));
-    var mSem = calcMedia(semL.map(function(t){return t.tempoSegundos;}));
-    s += '<div class="pb-surface" style="padding:12px"><div class="sec-title">▶ CAMINHÃO DE LIXO</div>'+
-      '<p style="font-size:7px;color:#8bac0f;line-height:2.2;margin-bottom:12px">ENCONTRADO '+comL.length+'/'+rua.length+' VEZES ('+Math.round(comL.length/rua.length*100)+'%)</p>'+
-      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">'+
-        '<div class="pb-surface" style="padding:8px;text-align:center;border:2px solid #306230">'+
-          '<div style="font-size:7px;color:#306230;margin-bottom:6px;line-height:2">SEM</div>'+
-          '<div style="font-size:10px;color:#9bbc0f">'+(mSem?fmt(Math.round(mSem)):'—')+'</div>'+
-        '</div>'+
-        '<div class="pb-orange" style="padding:8px;text-align:center">'+
-          '<div style="font-size:7px;color:#c87820;margin-bottom:6px;line-height:2">COM</div>'+
-          '<div style="font-size:10px;color:#e8a040">'+(mCom?fmt(Math.round(mCom)):'—')+'</div>'+
-        '</div>'+
-      '</div></div>';
-  }
+  s+='<div class="pb-surface" style="padding:12px"><div class="sec-title">▶ HISTÓRICO</div>';
+  if(!filtrados.length){s+='<p style="font-size:7px;color:#306230;text-align:center;padding:16px;line-height:2">NENHUM TRAJETO REGISTRADO</p>';}
+  else{filtrados.slice().reverse().forEach(function(t){var dot=t.caminho==='mergulhao'?'dot-blue':'dot-green';var nm=t.caminho==='mergulhao'?'MERGULHÃO':'RUA';var tags=(t.chuva?' [CHUVA]':'')+(t.caminhaoLixo?' [LIXO]':'');s+='<div style="display:flex;align-items:center;gap:8px;padding:10px 0;border-bottom:1px solid #1a3a1a;font-size:7px"><div class="'+dot+'"></div><div style="flex:1;min-width:0"><div style="color:#9bbc0f;line-height:2">'+nm+tags+'</div><div style="color:#306230;line-height:2">'+fmtData(t.data)+'</div></div><div style="color:#8bac0f;font-weight:bold">'+fmt(t.tempoSegundos)+'</div>';if(S.confirmDelete===t.id){s+='<div style="display:flex;gap:4px"><button onclick="A.execDelete('+t.id+')" style="font-size:7px;background:#280808;border:2px solid #c83030;color:#ef8080;padding:4px 6px;cursor:pointer">✓</button><button onclick="A.cancelDelete()" style="font-size:7px;background:#0d220f;border:2px solid #306230;color:#9bbc0f;padding:4px 6px;cursor:pointer">✗</button></div>';}else{s+='<button onclick="A.confirmDel('+t.id+')" style="font-size:14px;background:none;border:none;color:#306230;cursor:pointer;padding:0 4px">×</button>';}s+='</div>';});}
+  return s+'</div></div></div>';
+}
 
-  // Histórico
-  s += '<div class="pb-surface" style="padding:12px"><div class="sec-title">▶ HISTÓRICO</div>';
-  if (filtrados.length===0) {
-    s += '<p style="font-size:7px;color:#306230;text-align:center;padding:16px;line-height:2">NENHUM TRAJETO REGISTRADO</p>';
-  } else {
-    filtrados.slice().reverse().forEach(function(t) {
-      var dot = t.caminho==='mergulhao'?'dot-blue':'dot-green';
-      var nome = t.caminho==='mergulhao'?'MERGULHÃO':'RUA';
-      var tags = (t.chuva?' [CHUVA]':'')+(t.caminhaoLixo?' [LIXO]':'');
-      s += '<div style="display:flex;align-items:center;gap:8px;padding:10px 0;border-bottom:1px solid #1a3a1a;font-size:7px">'+
-        '<div class="'+dot+'"></div>'+
-        '<div style="flex:1;min-width:0">'+
-          '<div style="color:#9bbc0f;line-height:2">'+nome+tags+'</div>'+
-          '<div style="color:#306230;line-height:2">'+fmtData(t.data)+'</div>'+
-        '</div>'+
-        '<div style="color:#8bac0f;font-weight:bold">'+fmt(t.tempoSegundos)+'</div>';
-      if (S.confirmDelete===t.id) {
-        s += '<div style="display:flex;gap:4px">'+
-          '<button onclick="A.execDelete('+t.id+')" style="font-size:7px;background:#280808;border:2px solid #c83030;color:#ef8080;padding:4px 6px;cursor:pointer">✓</button>'+
-          '<button onclick="A.cancelDelete()" style="font-size:7px;background:#0d220f;border:2px solid #306230;color:#9bbc0f;padding:4px 6px;cursor:pointer">✗</button>'+
-        '</div>';
-      } else {
-        s += '<button onclick="A.confirmDel('+t.id+')" style="font-size:14px;background:none;border:none;color:#306230;cursor:pointer;padding:0 4px">×</button>';
-      }
-      s += '</div>';
-    });
-  }
-  s += '</div></div></div>';
-  return s;
+function renderConfig(){
+  var tok=getToken();
+  var masked=tok?tok.substring(0,6)+'...'+tok.substring(tok.length-4):'';
+  var statusTxt=syncStatus==='ok'?'CONECTADO':syncStatus==='error'?'ERRO NA CONEXÃO':syncStatus==='syncing'?'SINCRONIZANDO...':'NÃO CONFIGURADO';
+  var statusCol=syncStatus==='ok'?'#9bbc0f':syncStatus==='error'?'#c83030':syncStatus==='syncing'?'#4a90c8':'#306230';
+
+  var s='<div style="min-height:100vh;background:#0f380f;padding-bottom:40px"><div class="gb-header"><button onclick="A.voltar()" style="font-size:8px;color:#9bbc0f;background:none;border:none;cursor:pointer;padding:0">← VOLTAR</button><span style="font-size:10px;color:#9bbc0f">SYNC</span><span></span></div><div style="padding:12px;display:flex;flex-direction:column;gap:12px">';
+
+  s+='<div class="pb-surface" style="padding:16px;text-align:center"><div style="font-size:7px;color:#306230;margin-bottom:8px;letter-spacing:2px">STATUS</div><div style="font-size:9px;color:'+statusCol+';line-height:2">'+statusTxt+'</div>';
+  if(tok) s+='<div style="font-size:7px;color:#306230;margin-top:8px">TOKEN: '+esc(masked)+'</div>';
+  s+='</div>';
+
+  s+='<div class="pb-surface" style="padding:12px"><div class="sec-title">▶ TOKEN DO GITHUB</div><p style="font-size:7px;color:#8bac0f;line-height:2.5;margin-bottom:12px">Salva seus dados no GitHub automaticamente. Nunca mais perde registros.</p><input id="token-input" type="text" placeholder="Cole o token aqui" style="width:100%;padding:10px 8px;background:#122c14;border:2px solid #8bac0f;color:#9bbc0f;font-size:8px;margin-bottom:10px;outline:none" /><button onclick="A.salvarToken()" class="btn btn-green" style="font-size:9px;padding:14px">SALVAR TOKEN</button></div>';
+
+  s+='<div class="pb-surface" style="padding:12px"><div class="sec-title">▶ COMO CRIAR O TOKEN</div><div style="font-size:7px;color:#8bac0f;line-height:3">';
+  s+='1. Abra github.com<br>';
+  s+='2. Settings (seu perfil)<br>';
+  s+='3. Developer settings<br>';
+  s+='4. Personal access tokens<br>';
+  s+='5. Fine-grained tokens<br>';
+  s+='6. Generate new token<br>';
+  s+='7. Nome: Caminho<br>';
+  s+='8. Repository: pebot09/Caminho<br>';
+  s+='9. Permissions → Contents: Read and write<br>';
+  s+='10. Generate token e cole acima';
+  s+='</div></div>';
+
+  if(tok) s+='<button onclick="A.syncManual()" class="btn btn-blue" style="font-size:9px;padding:14px">SINCRONIZAR AGORA</button>';
+  return s+'</div></div>';
 }
 
 // ===== RENDER =====
-function render() {
-  var root = document.getElementById('root');
-  if (S.tela==='cronometro') root.innerHTML = renderCronometro();
-  else if (S.tela==='stats') root.innerHTML = renderEstatisticas();
-  else root.innerHTML = renderPrincipal();
+function render(){
+  var root=document.getElementById('root');
+  if(S.tela==='cronometro') root.innerHTML=renderCronometro();
+  else if(S.tela==='stats') root.innerHTML=renderEstatisticas();
+  else if(S.tela==='config') root.innerHTML=renderConfig();
+  else root.innerHTML=renderPrincipal();
 }
 
-function tickTimer() {
-  if (!startTime) return;
-  S.segundos = Math.floor((Date.now()-startTime)/1000);
-  var el = document.getElementById('timer-display');
-  if (el) el.textContent = fmt(S.segundos);
+function tickTimer(){
+  if(!startTime) return;
+  S.segundos=Math.floor((Date.now()-startTime)/1000);
+  var el=document.getElementById('timer-display');
+  if(el) el.textContent=fmt(S.segundos);
 }
 
-// ===== ACTIONS (global) =====
-window.A = {
-  iniciar: function(c) {
-    S.caminho=c; S.segundos=0; S.caminhaoLixo=false; S.tela='cronometro';
-    startTime=Date.now();
-    render();
-    timerRef=setInterval(tickTimer,500);
-  },
-  parar: function() {
-    clearInterval(timerRef);
-    var finalSeg = startTime ? Math.floor((Date.now()-startTime)/1000) : S.segundos;
-    S.ultimoSalvo = salvarTrajeto(S.caminho,finalSeg,S.chuva,S.caminhaoLixo);
-    S.tela='principal';
-    S.rec = calcRec(S.chuva);
-    startTime=null;
-    render();
-  },
-  toggleChuva: function() {
-    S.chuva=!S.chuva; S.rec=calcRec(S.chuva); render();
-  },
-  toggleCaminhao: function() {
-    S.caminhaoLixo=!S.caminhaoLixo; render();
-  },
-  irStats: function() {
-    S.tela='stats'; S.filtroDia='todos'; S.filtroChuva='todos'; S.confirmDelete=null; render();
-  },
-  voltar: function() { S.tela='principal'; render(); },
-  setFiltroDia: function(v) { S.filtroDia=v; render(); },
-  setFiltroChuva: function(v) { S.filtroChuva=v; render(); },
-  confirmDel: function(id) { S.confirmDelete=id; render(); },
-  cancelDelete: function() { S.confirmDelete=null; render(); },
-  execDelete: function(id) { deletarTrajeto(id); S.confirmDelete=null; render(); }
+// ===== ACTIONS =====
+window.A={
+  iniciar:function(c){S.caminho=c;S.segundos=0;S.caminhaoLixo=false;S.tela='cronometro';startTime=Date.now();render();timerRef=setInterval(tickTimer,500);},
+  parar:function(){clearInterval(timerRef);var f=startTime?Math.floor((Date.now()-startTime)/1000):S.segundos;S.ultimoSalvo=salvarTrajeto(S.caminho,f,S.chuva,S.caminhaoLixo);S.tela='principal';S.rec=calcRec(S.chuva);startTime=null;render();doSync();},
+  toggleChuva:function(){S.chuva=!S.chuva;S.rec=calcRec(S.chuva);render();},
+  toggleCaminhao:function(){S.caminhaoLixo=!S.caminhaoLixo;render();},
+  irStats:function(){S.tela='stats';S.filtroDia='todos';S.filtroChuva='todos';S.confirmDelete=null;render();},
+  irConfig:function(){S.tela='config';render();},
+  voltar:function(){S.tela='principal';render();},
+  setFiltroDia:function(v){S.filtroDia=v;render();},
+  setFiltroChuva:function(v){S.filtroChuva=v;render();},
+  confirmDel:function(id){S.confirmDelete=id;render();},
+  cancelDelete:function(){S.confirmDelete=null;render();},
+  execDelete:function(id){deletarTrajeto(id);S.confirmDelete=null;render();doSync();},
+  salvarToken:function(){var el=document.getElementById('token-input');if(!el||!el.value.trim()){return;}saveGhToken(el.value);doSync(function(){render();});},
+  syncManual:function(){doSync(function(){render();});}
 };
 
-// Visibility change fix for timer
-document.addEventListener('visibilitychange', function() {
-  if (document.visibilityState==='visible' && startTime && S.tela==='cronometro') {
-    tickTimer();
-  }
+document.addEventListener('visibilitychange',function(){
+  if(document.visibilityState==='visible'&&startTime&&S.tela==='cronometro') tickTimer();
 });
 
 // ===== INIT =====
-S.rec = calcRec(false);
+S.rec=calcRec(false);
 render();
+if(getToken()) doSync(function(){render();});
 })();
 </script>
 </body>
