@@ -1,0 +1,62 @@
+[
+  {
+    "id": 1781365390346,
+    "data": "2026-06-13T15:43:10.346Z",
+    "diaSemana": 6,
+    "hora": 12,
+    "caminho": "mergulhao",
+    "tempoSegundos": 268,
+    "chuva": false,
+    "caminhaoLixo": false
+  },
+  {
+    "id": 1781407025037,
+    "data": "2026-06-14T03:17:05.037Z",
+    "diaSemana": 0,
+    "hora": 0,
+    "caminho": "mergulhao",
+    "tempoSegundos": 120,
+    "chuva": false,
+    "caminhaoLixo": false
+  },
+  {
+    "id": 1781713096550,
+    "data": "2026-06-17T16:18:16.550Z",
+    "diaSemana": 3,
+    "hora": 13,
+    "caminho": "mergulhao",
+    "tempoSegundos": 442,
+    "chuva": false,
+    "caminhaoLixo": false
+  },
+  {
+    "id": 1781783225334,
+    "data": "2026-06-18T11:47:05.334Z",
+    "diaSemana": 4,
+    "hora": 8,
+    "caminho": "rua_passagem",
+    "tempoSegundos": 590,
+    "chuva": false,
+    "caminhaoLixo": false
+  },
+  {
+    "id": 1781971099600,
+    "data": "2026-06-20T15:58:19.600Z",
+    "diaSemana": 6,
+    "hora": 12,
+    "caminho": "mergulhao",
+    "tempoSegundos": 201,
+    "chuva": false,
+    "caminhaoLixo": false
+  },
+  {
+    "id": 1782318136168,
+    "data": "2026-06-24T16:22:16.168Z",
+    "diaSemana": 3,
+    "hora": 13,
+    "caminho": "mergulhao",
+    "tempoSegundos": 761,
+    "chuva": true,
+    "caminhaoLixo": false
+  }
+]
