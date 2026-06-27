@@ -68,5 +68,15 @@
     "tempoSegundos": 397,
     "chuva": true,
     "caminhaoLixo": false
+  },
+  {
+    "id": 1782601054734,
+    "data": "2026-06-27T22:57:34.734Z",
+    "diaSemana": 6,
+    "hora": 19,
+    "caminho": "rua_passagem",
+    "tempoSegundos": 353,
+    "chuva": false,
+    "caminhaoLixo": false
   }
 ]
