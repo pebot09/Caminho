@@ -88,5 +88,15 @@
     "tempoSegundos": 108,
     "chuva": false,
     "caminhaoLixo": false
+  },
+  {
+    "id": 1783444607177,
+    "data": "2026-07-07T17:16:47.177Z",
+    "diaSemana": 2,
+    "hora": 14,
+    "caminho": "mergulhao",
+    "tempoSegundos": 313,
+    "chuva": false,
+    "caminhaoLixo": false
   }
 ]
