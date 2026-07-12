@@ -128,5 +128,15 @@
     "tempoSegundos": 1136,
     "chuva": false,
     "caminhaoLixo": false
+  },
+  {
+    "id": 1783815914030,
+    "data": "2026-07-12T00:25:14.030Z",
+    "diaSemana": 6,
+    "hora": 21,
+    "caminho": "mergulhao",
+    "tempoSegundos": 90,
+    "chuva": false,
+    "caminhaoLixo": false
   }
 ]
